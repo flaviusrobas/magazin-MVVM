@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magazin", "Magazin\Magazin.csproj", "{FC200788-00D0-4D98-989C-9E72CB830927}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MagData", "MagData\MagData.sqlproj", "{6029DE8E-E96F-4080-9F0D-F8E3ED78FFC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagDesktopUI", "MagDesktopUI\MagDesktopUI.csproj", "{D4EFBF74-61B2-4BF7-B448-20C2A5A3575B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FC200788-00D0-4D98-989C-9E72CB830927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC200788-00D0-4D98-989C-9E72CB830927}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC200788-00D0-4D98-989C-9E72CB830927}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC200788-00D0-4D98-989C-9E72CB830927}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6029DE8E-E96F-4080-9F0D-F8E3ED78FFC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6029DE8E-E96F-4080-9F0D-F8E3ED78FFC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6029DE8E-E96F-4080-9F0D-F8E3ED78FFC7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6029DE8E-E96F-4080-9F0D-F8E3ED78FFC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6029DE8E-E96F-4080-9F0D-F8E3ED78FFC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6029DE8E-E96F-4080-9F0D-F8E3ED78FFC7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D4EFBF74-61B2-4BF7-B448-20C2A5A3575B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4EFBF74-61B2-4BF7-B448-20C2A5A3575B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4EFBF74-61B2-4BF7-B448-20C2A5A3575B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4EFBF74-61B2-4BF7-B448-20C2A5A3575B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B7A2CFD-F75B-48DB-BE70-4C3F7EF6DCB7}
+	EndGlobalSection
+EndGlobal
