@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using MagDesktopUI.Helpers;
+using MagDesktopUI.Library.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,32 @@ namespace MagDesktopUI.ViewModels
             }
         }
 
+        public bool IsErrorVisible
+        {
+            get
+            {
+                bool output = false;
+                if (ErrorMessage?.Length > 0)
+                {
+                    output = true;
+                }
+                return output;
+            }           
+
+        }
+
+        private string _errorMessage;
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            {                
+                _errorMessage = value;
+                NotifyOfPropertyChange(() => IsErrorVisible);
+                NotifyOfPropertyChange(() => ErrorMessage);
+            }
+        }
+
 
         public bool CanLogIn
         {
@@ -61,12 +88,16 @@ namespace MagDesktopUI.ViewModels
         {
             try
             {
+                ErrorMessage = string.Empty; // Clear previous error message
                 var result = await _apiHelper.Authenticate(UserName, Password);
+
+                //Caption more information about the user
+                await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
             }
             catch (Exception ex)
             {
-                // Handle the exception (e.g., show a message to the user)
-                Console.WriteLine($"Login failed: {ex.Message}");
+                //Console.WriteLine(ex.Message);
+                ErrorMessage = ex.Message;
             }
             
         }       
