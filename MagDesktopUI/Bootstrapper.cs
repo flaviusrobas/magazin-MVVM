@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
-using MagDesktopUI.Helpers;
 using MagDesktopUI.Library.Api;
+using MagDesktopUI.Helpers;
 using MagDesktopUI.Library.Models;
 using MagDesktopUI.ViewModels;
 using System;
@@ -33,14 +33,14 @@ namespace MagDesktopUI
         protected override void Configure()
         {
             //Initialize the container -this is where we register our services and view models
-            _container.Instance(_container);
+            _container.Instance(_container)
+                .PerRequest<IProductEndpoint, ProductEndpoint>();
 
             // Register the services and view models
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
                 .Singleton<ILoggedInUserModel, LoggedInUserModel>()
-            // Register the APIHelper as a singleton
                 .Singleton<IAPIHelper, APIHelper>();
             // putem sa cerem apiHelper oriunde ne aflam in aplicatie si vom obtine aceeasi instanta
 

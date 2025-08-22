@@ -29,14 +29,6 @@
     Login Form
         </TextBlock>
 
-        <!--Error Message row-->
-        <!--<TextBlock x:Name="ErrorMessage" Text="This is an error message where we tell you what is wrong" 
-                   Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
-                   HorizontalAlignment="Center" Foreground="Red" 
-                   MaxWidth="300" TextWrapping="Wrap"
-                   FontSize="24" Margin="0 0 0 20"
-                   />-->
-
         <TextBlock x:Name="ErrorMessage" 
                    Visibility="{Binding IsErrorVisible, Converter={StaticResource BooleanVisibilityConverter}, FallbackValue=Collapsed}"
                    Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"

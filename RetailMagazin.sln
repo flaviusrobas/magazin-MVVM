@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagDesktopUI", "MagDesktopU
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magazin.Library", "Magazin.Library\Magazin.Library.csproj", "{12F94B29-FE0A-4E12-A836-C376198E9F0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagDesktopUI.Library", "MagazinDesktopUI.Library\MagDesktopUI.Library.csproj", "{AB6EE01B-BDFB-477F-8381-931C4DE83050}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagDesktopUI.Library", "MagDesktopUI.Library\MagDesktopUI.Library.csproj", "{AB6EE01B-BDFB-477F-8381-931C4DE83050}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

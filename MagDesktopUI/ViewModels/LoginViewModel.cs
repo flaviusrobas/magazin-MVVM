@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using MagDesktopUI.EventsModel;
 using MagDesktopUI.Helpers;
 using MagDesktopUI.Library.Api;
 using System;
@@ -14,10 +15,12 @@ namespace MagDesktopUI.ViewModels
         private string _username;
         private string _password;
         private IAPIHelper _apiHelper;
+        private IEventAggregator _events;
 
-        public LoginViewModel(IAPIHelper apiHelper)
+        public LoginViewModel(IAPIHelper apiHelper, IEventAggregator events)
         {
             _apiHelper = apiHelper;
+            _events = events;
         }
 
         public string UserName
@@ -38,8 +41,7 @@ namespace MagDesktopUI.ViewModels
             {
                 _password = value;
                 NotifyOfPropertyChange(() => Password);
-                NotifyOfPropertyChange(() => CanLogIn);
-                //CanLogIn(UserName, Password);
+                NotifyOfPropertyChange(() => CanLogIn);                
             }
         }
 
@@ -84,7 +86,7 @@ namespace MagDesktopUI.ViewModels
             }
         }
 
-        public async Task Login()
+        public async Task LogIn()
         {
             try
             {
@@ -93,6 +95,8 @@ namespace MagDesktopUI.ViewModels
 
                 //Caption more information about the user
                 await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
+
+                await _events.PublishOnUIThreadAsync(new LogOnEvent());
             }
             catch (Exception ex)
             {
