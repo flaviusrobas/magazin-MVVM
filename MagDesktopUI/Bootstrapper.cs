@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using MagDesktopUI.Library.Helpers;
 
 namespace MagDesktopUI
 {
@@ -41,6 +42,7 @@ namespace MagDesktopUI
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
                 .Singleton<ILoggedInUserModel, LoggedInUserModel>()
+                .Singleton<IConfigHelper, ConfigHelper>()
                 .Singleton<IAPIHelper, APIHelper>();
             // putem sa cerem apiHelper oriunde ne aflam in aplicatie si vom obtine aceeasi instanta
 

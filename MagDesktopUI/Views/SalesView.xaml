@@ -30,39 +30,31 @@
         <TextBlock Text="Sales Page" Grid.Row="0" Grid.Column="0" 
                    Grid.ColumnSpan="3" Margin="0 10 0 10" HorizontalAlignment="Center"
                    VerticalAlignment="Center" FontSize="48"/>
+        
 
         <!-- Column 0-->
         <TextBlock Text="Items" Grid.Row="1" Grid.Column="0"/>
-        <ListBox x:Name="Product" Grid.Row="2" Grid.Column="0" 
-                 MinHeight="200" MinWidth="200"
-                 ItemsSource="{Binding Products}"
+        <ListBox x:Name="Products" Grid.Row="2" Grid.Column="0" 
+                 MinHeight="200" MinWidth="200"                 
                  SelectedItem="{Binding SelectedProduct}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Path=ProductName}" />
+                    <TextBlock Text="{Binding ProductName}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
         
-        <!--ItemsSource="{Binding Products}"
-           
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Path=ProductName}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>            
-        </ListBox>-->
-
 
         <!-- Column 1-->
         <StackPanel Orientation="Vertical" Grid.Column="1" 
                     Grid.Row="2" Margin="20 0" >
             <TextBlock Text="Quantity"/>
-            <TextBox x:Name="ItemQuantity" MinWidth="100" Margin="0 0 0 10"/>
+            <TextBox Text = "{Binding Path = ItemQuantity}" MinWidth="100" Margin="0 0 0 10" />
             <Button x:Name="AddToCart" Content="Add to Cart" Margin="0 0 0 30" 
                     Padding="5" />
             <Button x:Name="RemoveFromCart" Content="Remove from Cart"/>
         </StackPanel>
+        
 
         <!-- Column 2-->
         <TextBlock Text="Cart" Grid.Row="1" Grid.Column="2"/>
@@ -73,30 +65,28 @@
                     <TextBlock Text="{Binding Path=DisplayText}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>
+        </ListBox>        
 
-
-        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="2" >
-            <TextBlock Text="SubTotal: " Margin="0 0 15 0"/>
-            <TextBlock x:Name="SubTotal" Text="$0.00" Grid.Row="2"
+            <DockPanel  Grid.Row="3" Grid.Column="2">
+                <TextBlock Text="SubTotal"/>
+                <TextBlock x:Name="SubTotal" Text="$0.00" Grid.Row="2"
                         Grid.Column="2" TextAlignment="Right"/>
-            </StackPanel>
+            </DockPanel>
 
             <DockPanel  Grid.Row="4" Grid.Column="2">
                 <TextBlock Text="Tax: " />
                 <TextBlock x:Name="Tax" Text="$0.00" Grid.Row="2"
-                Grid.Column="2" TextAlignment="Right" />
+                        Grid.Column="2" TextAlignment="Right" />
             </DockPanel>
 
             <DockPanel  Grid.Row="5" Grid.Column="2">
                 <TextBlock Text="Total: " />
                 <TextBlock x:Name="Total" Text="$0.00" Grid.Row="2"
-                Grid.Column="2" TextAlignment="Right"/>
+                            Grid.Column="2" TextAlignment="Right"/>
             </DockPanel>
 
             <Button x:Name="Checkout" Content="Check Out" Grid.Row="6" Grid.Column="2"
                 Margin="0 20 0 0" Padding="5"/>
-
 
 
     </Grid>

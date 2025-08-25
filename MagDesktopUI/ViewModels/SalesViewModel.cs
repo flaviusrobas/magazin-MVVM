@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
 using MagDesktopUI.Library.Api;
+using MagDesktopUI.Library.Helpers;
 using MagDesktopUI.Library.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -11,10 +13,12 @@ namespace MagDesktopUI.Views
     public class SalesViewModel : Screen
     {
         IProductEndpoint _productEndpoint;
-        public SalesViewModel(IProductEndpoint productEndpoint)
+        IConfigHelper _configHelper;
+        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper)
         {
             _productEndpoint = productEndpoint;
-            
+            _configHelper = configHelper;
+
         }
 
         protected override async void OnViewLoaded(object view)
@@ -22,26 +26,25 @@ namespace MagDesktopUI.Views
             base.OnViewLoaded(view);
             // Load the products from the API
             await LoadProducts();
-            //// Initialize the cart
-            //Cart = new BindingList<ProductModel>();
-            //ItemQuantity = 1; // Set default quantity to 1
+
         }
 
         private async Task LoadProducts()
         {
+
             var productList = await _productEndpoint.GetAll();
             Products = new BindingList<ProductModel>(productList.ToList());
             //Products = new BindingList<ProductModel>(productList.OrderBy(p => p.ProductName).ToList());
-            //NotifyOfPropertyChange(() => Products);
+
         }
-        
+
         private BindingList<ProductModel> _products;
 
         public BindingList<ProductModel> Products
         {
             get { return _products; }
-            set 
-            { 
+            set
+            {
                 _products = value;
                 NotifyOfPropertyChange(() => Products);
             }
@@ -52,7 +55,8 @@ namespace MagDesktopUI.Views
         public ProductModel SelectedProduct
         {
             get { return _selectedProduct; }
-            set {
+            set
+            {
                 _selectedProduct = value;
                 NotifyOfPropertyChange(() => SelectedProduct);
             }
@@ -84,42 +88,83 @@ namespace MagDesktopUI.Views
             }
         }
 
+       
+
         public string SubTotal
         {
             get
             {
-                decimal subTotal = 0;
-                foreach (var item in Cart)
-                {
-                    subTotal += (item.Product.RetailPrice * item.QuantityInCart);
-                }
-                return subTotal.ToString("C");
+                return CalculateSubTotal().ToString("C");
             }
+        }
+
+        private decimal CalculateSubTotal()
+        {
+            decimal subTotal = 0;
+            foreach (var item in Cart)
+            {
+                subTotal += (item.Product.RetailPrice * item.QuantityInCart);
+            }
+            return subTotal;
+        }
+
+        private decimal CalculateTax()
+        {
+            decimal taxAmount = 0;
+            decimal taxRate = _configHelper.GetTaxRate() / 100;
+
+            //Using Linq to calculate tax
+            taxAmount = Cart.
+                Where(i => i.Product.IsTaxable)
+                .Sum(i => i.Product.RetailPrice * i.QuantityInCart * taxRate);
+
+            //foreach (var item in Cart)
+            //{
+            //    if (item.Product.IsTaxable)
+            //    {
+            //        taxAmount += (item.Product.RetailPrice * item.QuantityInCart * taxRate);
+            //    }
+            //}
+
+            return taxAmount;
         }
 
         public string Tax
         {
-            //TODO - replace this with a real calculation
-            get { return "$0.00"; }
+            get
+            {
+                return CalculateTax().ToString("C");
+            }
 
         }
 
         public string Total
         {
-            //TODO - replace this with a real calculation
-            get { return "$0.00"; }
+            get
+            {
+                decimal total = CalculateSubTotal() + CalculateTax();
+                return total.ToString("C");
+            }
 
         }
 
-        public bool CanAddToCart
+        /*does not activate the button [Add to Cart] at initial load*/
+        public bool CanAddToCart 
         {
             get
             {
                 bool output = false;
 
-                //Make sure ItemQuantity is not null or empty
-                // Check if ItemQuantity is not null or empty and is a valid number
-                if(ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity)
+                
+                    //if (SelectedProduct != null && ItemQuantity > 0)
+                    //{
+                    //    if (SelectedProduct.QuantityInStock >= ItemQuantity)
+                    //    output = true;                        
+                    //}
+
+
+
+                if (ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity)
                 {
                     output = true;
                 }
@@ -148,11 +193,12 @@ namespace MagDesktopUI.Views
                 };
                 Cart.Add(cartItem);
             }
+
             SelectedProduct.QuantityInStock -= ItemQuantity;
-            ItemQuantity = 1; // Reset quantity to 1 after adding to cart
             NotifyOfPropertyChange(() => SubTotal);
-            NotifyOfPropertyChange(() => Cart);
-            //NotifyOfPropertyChange(() => existingItem.DisplayText); //Hack - not working correctly
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
+
         }
 
         public bool CanRemoveFromCart
@@ -162,7 +208,7 @@ namespace MagDesktopUI.Views
                 bool output = false;
 
                 //Make sure ItemQuantity is not null or empty
-               
+
                 return output;
             }
         }
@@ -170,6 +216,8 @@ namespace MagDesktopUI.Views
         public void RemoveFromCart()
         {
             NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
         }
 
         public bool CanCheckOut
@@ -179,7 +227,7 @@ namespace MagDesktopUI.Views
                 bool output = false;
 
                 //Make sure ItemQuantity is not null or empty
-                
+
                 return output;
             }
         }
