@@ -8,23 +8,21 @@ namespace MagDesktopUI.ViewModels
 {
     public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>
     {
-       private LoginViewModel _loginVM;
        private IEventAggregator _events;
        private SalesViewModel _salesVM;
-       private SimpleContainer _container;
+      
 
-        public ShellViewModel(LoginViewModel loginVM, IEventAggregator events, SalesViewModel salesVM,
-            SimpleContainer container)
+        public ShellViewModel(IEventAggregator events, SalesViewModel salesVM)
         {
             _events = events;
-            _loginVM = loginVM;
             _salesVM = salesVM;
-            _container = container;
+            
 
             _events.SubscribeOnPublishedThread(this);
             // Subscribe to the LogOnEvent so that we can handle it when it is published
-            
-            ActivateItemAsync(_container.GetInstance<LoginViewModel>());
+
+            //ActivateItemAsync(_container.GetInstance<LoginViewModel>());
+            ActivateItemAsync(IoC.Get<LoginViewModel>());
         }
 
         public Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
