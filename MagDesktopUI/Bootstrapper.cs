@@ -35,7 +35,8 @@ namespace MagDesktopUI
         {
             //Initialize the container -this is where we register our services and view models
             _container.Instance(_container)
-                .PerRequest<IProductEndpoint, ProductEndpoint>();
+                .PerRequest<IProductEndpoint, ProductEndpoint>()
+                .PerRequest<ISaleEndpoint, SaleEndpoint>();
 
             // Register the services and view models
             _container

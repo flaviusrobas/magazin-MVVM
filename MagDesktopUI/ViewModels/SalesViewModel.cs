@@ -14,10 +14,14 @@ namespace MagDesktopUI.Views
     {
         IProductEndpoint _productEndpoint;
         IConfigHelper _configHelper;
-        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper)
+        ISaleEndpoint _saleEndpoint;
+        public SalesViewModel(IProductEndpoint productEndpoint, 
+                              IConfigHelper configHelper,
+                              ISaleEndpoint saleEndpoint)
         {
             _productEndpoint = productEndpoint;
             _configHelper = configHelper;
+            _saleEndpoint = saleEndpoint;
 
         }
 
@@ -218,18 +222,41 @@ namespace MagDesktopUI.Views
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
         }
 
         public bool CanCheckOut
         {
             get
             {
-                bool output = false;
+                bool output = true;
 
                 //Make sure ItemQuantity is not null or empty
+                if (Cart.Count > 0)
+                {
+                    output = true;
+                }
 
                 return output;
             }
+        }
+
+        public async Task CheckOut()
+        {
+            // Create SaleModel post to the API 
+            SaleModel sale = new SaleModel();
+
+            foreach(var item in Cart)
+            {
+                sale.SaleDetails.Add(new SaleDetailModel
+                {
+                    ProductId = item.Product.Id,
+                    Quantity = item.QuantityInCart                    
+                });
+                
+            }
+            
+            await _saleEndpoint.PostSale(sale);
         }
     }
 }

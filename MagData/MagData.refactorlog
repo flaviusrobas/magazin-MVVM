@@ -35,4 +35,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="[FK_Sale_ToUser]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="869c7231-ea21-499f-8326-50368e79bfb1" ChangeDateTime="08/25/2025 20:07:34">
+    <Property Name="ElementName" Value="[dbo].[Sale].[CashierId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Sale]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Cashierd" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="18f6180a-dc76-4373-99cf-d8d33c9ab129" ChangeDateTime="08/25/2025 20:09:55">
+    <Property Name="ElementName" Value="[dbo].[Sale].[Cashierd]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Sale]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CashierId" />
+  </Operation>
 </Operations>

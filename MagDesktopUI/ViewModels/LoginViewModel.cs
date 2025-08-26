@@ -12,8 +12,8 @@ namespace MagDesktopUI.ViewModels
 {
     public class LoginViewModel : Screen
     {
-        private string _username;
-        private string _password;
+        private string _username = "rbs@test.com"; // Default username for testing
+        private string _password = "Admin123#"; // Default password for testing
         private IAPIHelper _apiHelper;
         private IEventAggregator _events;
 

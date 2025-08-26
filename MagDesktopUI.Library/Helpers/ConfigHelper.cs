@@ -10,6 +10,7 @@ namespace MagDesktopUI.Library.Helpers
 {
     public class ConfigHelper : IConfigHelper
     {
+        // To Do this from config to the API
         public decimal GetTaxRate()
         {
             string rateText = ConfigurationManager.AppSettings["TaxRate"];
