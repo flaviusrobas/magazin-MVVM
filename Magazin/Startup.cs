@@ -14,5 +14,6 @@ namespace Magazin
         {
             ConfigureAuth(app);
         }
+
     }
 }

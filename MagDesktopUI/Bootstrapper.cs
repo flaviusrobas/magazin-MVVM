@@ -1,8 +1,12 @@
-﻿using Caliburn.Micro;
-using MagDesktopUI.Library.Api;
+﻿using AutoMapper;
+using Caliburn.Micro;
 using MagDesktopUI.Helpers;
+using MagDesktopUI.Library.Api;
+using MagDesktopUI.Library.Helpers;
 using MagDesktopUI.Library.Models;
+using MagDesktopUI.Models;
 using MagDesktopUI.ViewModels;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using MagDesktopUI.Library.Helpers;
+
 
 namespace MagDesktopUI
 {
@@ -31,8 +35,23 @@ namespace MagDesktopUI
               IWindowManager - interfata pentru managerul de ferestre
               SimpleContainer - container de dependente
               IEventAggregator - interfata pentru agregatorul de evenimente*/
+
+
+        private IMapper ConfigureAutomapper()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProductModel, ProductDisplayModel>();
+                cfg.CreateMap<CartItemModel, CartItemDisplayModel>();
+            });
+
+            var output = config.CreateMapper();
+            return output;
+        }
         protected override void Configure()
         {
+            _container.Instance(ConfigureAutomapper()); 
+
             //Initialize the container -this is where we register our services and view models
             _container.Instance(_container)
                 .PerRequest<IProductEndpoint, ProductEndpoint>()
@@ -45,6 +64,8 @@ namespace MagDesktopUI
                 .Singleton<ILoggedInUserModel, LoggedInUserModel>()
                 .Singleton<IConfigHelper, ConfigHelper>()
                 .Singleton<IAPIHelper, APIHelper>();
+
+          
             // putem sa cerem apiHelper oriunde ne aflam in aplicatie si vom obtine aceeasi instanta
 
             // Register all ViewModels in the assembly that end with "ViewModel"
