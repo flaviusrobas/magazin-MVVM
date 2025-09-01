@@ -10,5 +10,7 @@ namespace MagDesktopUI.Library.Models
         string ID { get; set; }
         string LastName { get; set; }
         string Token { get; set; }
+
+        void LogOffUser();
     }
 }

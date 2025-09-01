@@ -32,7 +32,6 @@ namespace MagDesktopUI.Views
         protected override async void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
-            // Load the products from the API
             await LoadProducts();
 
         }
@@ -72,6 +71,29 @@ namespace MagDesktopUI.Views
             }
         }
 
+        /// <summary>
+        /// Aici am ramas
+        /// /// </summary>
+        /// <returns></returns>
+        private async Task ResetSalesViewModel()  
+        {
+            _cart = new BindingList<CartItemDisplayModel>();
+            //TODO -Add clearing the selectedCartItem if it does not do it itself
+            await LoadProducts();
+        }
+
+        private CartItemDisplayModel _selectedCartItem;
+
+        public CartItemDisplayModel SelectedCartItem
+        {
+            get { return _selectedCartItem; }
+            set
+            {
+                _selectedCartItem = value;
+                NotifyOfPropertyChange(() => SelectedCartItem);
+                NotifyOfPropertyChange(() => CanRemoveFromCart);
+            }
+        }
 
         private BindingList<CartItemDisplayModel> _cart = new BindingList<CartItemDisplayModel>();
 
@@ -180,28 +202,27 @@ namespace MagDesktopUI.Views
             if (existingItem != null)
             {
                 existingItem.QuantityInCart += ItemQuantity;
-                //Hack - There should be a better way or refreshing the cart display
-                //Cart.Remove(existingItem);
-                //Cart.Add(existingItem);
-
+                
             }
             else
             {
-                CartItemDisplayModel cartItem = new CartItemDisplayModel
+                CartItemDisplayModel item = new CartItemDisplayModel
                 {
-                    //Product = _mapper.Map<ProductDisplayModel>(SelectedProduct),
                     Product = SelectedProduct,
-                    QuantityInCart = ItemQuantity
-                };
-                Cart.Add(cartItem);
-            }
+                    QuantityInCart = ItemQuantity,
 
+                };
+                Cart.Add(item);     
+
+            }
             SelectedProduct.QuantityInStock -= ItemQuantity;
+            
             ItemQuantity = 1;
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
             NotifyOfPropertyChange(() => CanCheckOut);
+            NotifyOfPropertyChange(() => CanAddToCart);
 
         }
 
@@ -211,7 +232,12 @@ namespace MagDesktopUI.Views
             {
                 bool output = false;
 
-                //Make sure ItemQuantity is not null or empty
+                //Make sure something is selected
+                if (SelectedCartItem !=null && SelectedCartItem?.QuantityInCart > 0)
+                {
+                    output = true;
+
+                }
 
                 return output;
             }
@@ -219,6 +245,18 @@ namespace MagDesktopUI.Views
 
         public void RemoveFromCart()
         {
+            SelectedCartItem.Product.QuantityInStock += 1;
+
+            if (SelectedCartItem.QuantityInCart > 1)
+            {
+                SelectedCartItem.QuantityInCart -= 1;
+               
+            }
+            else
+            {                
+                Cart.Remove(SelectedCartItem);
+            }
+
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);

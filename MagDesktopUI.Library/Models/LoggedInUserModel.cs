@@ -14,5 +14,17 @@ namespace MagDesktopUI.Library.Models
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
         public DateTime CreateDate { get; set; }
+
+        public void LogOffUser()
+        {
+            Token = "";
+            ID = "";
+            FirstName = "";
+            LastName = "";
+            EmailAddress = "";
+            CreateDate = DateTime.MinValue;
+
+        }
+
     }
 }
