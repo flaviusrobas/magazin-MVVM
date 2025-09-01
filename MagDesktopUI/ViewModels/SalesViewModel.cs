@@ -20,7 +20,8 @@ namespace MagDesktopUI.Views
         IConfigHelper _configHelper;
         ISaleEndpoint _saleEndpoint;
         IMapper _mapper;
-        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, ISaleEndpoint saleEndpoint, IMapper mapper)
+        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, 
+            ISaleEndpoint saleEndpoint, IMapper mapper)
         {
             _productEndpoint = productEndpoint;
             _configHelper = configHelper;
@@ -71,10 +72,7 @@ namespace MagDesktopUI.Views
             }
         }
 
-        /// <summary>
-        /// Aici am ramas
-        /// /// </summary>
-        /// <returns></returns>
+        
         private async Task ResetSalesViewModel()  
         {
             _cart = new BindingList<CartItemDisplayModel>();
@@ -201,7 +199,7 @@ namespace MagDesktopUI.Views
             CartItemDisplayModel existingItem = Cart.FirstOrDefault(i => i.Product == SelectedProduct);
             if (existingItem != null)
             {
-                existingItem.QuantityInCart += ItemQuantity;
+                existingItem.QuantityInCart += ItemQuantity;                
                 
             }
             else
@@ -215,8 +213,8 @@ namespace MagDesktopUI.Views
                 Cart.Add(item);     
 
             }
-            SelectedProduct.QuantityInStock -= ItemQuantity;
-            
+            SelectedProduct.QuantityInStock -= ItemQuantity;     
+         
             ItemQuantity = 1;
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);

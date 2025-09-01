@@ -20,6 +20,7 @@ namespace MagDesktopUI.Models
             { 
                 _quantityInCart = value;
                 OnPropertyChanged(nameof(QuantityInCart));
+                OnPropertyChanged(nameof(DisplayText));
                 
             }
         }
