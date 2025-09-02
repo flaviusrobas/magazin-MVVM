@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using MagDesktopUI.EventsModel;
+using MagDesktopUI.Library.Api;
 using MagDesktopUI.Library.Models;
 using MagDesktopUI.Views;
 
@@ -12,13 +13,16 @@ namespace MagDesktopUI.ViewModels
         private IEventAggregator _events;
         private SalesViewModel _salesVM;
         private ILoggedInUserModel _user;
+        private IAPIHelper _apiHelper;
 
 
-        public ShellViewModel(IEventAggregator events, SalesViewModel salesVM, ILoggedInUserModel user)
+        public ShellViewModel(IEventAggregator events, SalesViewModel salesVM, 
+            ILoggedInUserModel user, IAPIHelper helper)
         {
             _events = events;
             _salesVM = salesVM;
             _user = user;
+            _apiHelper = helper;
 
             _events.SubscribeOnPublishedThread(this);
             
@@ -43,13 +47,14 @@ namespace MagDesktopUI.ViewModels
 
 
         public void ExitApplication()
-        {
-            TryCloseAsync();
+        {            
+            TryCloseAsync(); 
         }
 
         public void LogOut()
         {
-            _user.LogOffUser();
+            _user.ResetUserModel();
+            _apiHelper.LogOffUser();
             ActivateItemAsync(IoC.Get<LoginViewModel>());
             NotifyOfPropertyChange(() => IsLoggedIn);
         }
