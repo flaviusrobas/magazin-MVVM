@@ -6,7 +6,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;//install NuGet package Microsoft.Data.SqlClient by Microsoft
+using Microsoft.Data.SqlClient;
+using Magazin.Library.Models;//install NuGet package Microsoft.Data.SqlClient by Microsoft
 
 /*using System.Data.SqlClient;
 "Message": "An error has occurred.",
@@ -17,7 +18,7 @@ using Microsoft.Data.SqlClient;//install NuGet package Microsoft.Data.SqlClient 
 namespace Magazin.Library.Internal.DataAccess
 
 {
-    internal class SqlDataAccess
+    internal class SqlDataAccess : IDisposable
     {
         //Method to get the connection string from the configuration file
         public string GetConnectionString(string name)
@@ -31,11 +32,11 @@ namespace Magazin.Library.Internal.DataAccess
             string connectionString = GetConnectionString(connectionStringName);
 
             using (IDbConnection connection = new SqlConnection(connectionString))
-            { 
+            {
                 connection.Open();
                 List<T> rows = connection.Query<T>(storedProcedure, parameters,
                     commandType: CommandType.StoredProcedure).ToList();
-                return rows;                
+                return rows;
             }
         }
         //Implementation of SaveData method
@@ -50,6 +51,63 @@ namespace Magazin.Library.Internal.DataAccess
                     commandType: CommandType.StoredProcedure);
             }
         }
+
+        private IDbConnection _connection;
+        private IDbTransaction _transaction;
+
+        public void StartTransaction(string connectionStringName)
+        {
+            string connectionString = GetConnectionString(connectionStringName);
+
+            _connection = new SqlConnection(connectionString);
+            _connection.Open();
+
+            _transaction = _connection.BeginTransaction();
+
+        }
+
+        public List<T> LoadDataInTransaction<T, U>(string storedProcedure, U parameters)
+        {
+
+            List<T> rows = _connection.Query<T>(storedProcedure, parameters,
+                commandType: CommandType.StoredProcedure,
+                transaction: _transaction).ToList();
+
+            return rows;
+
+        }
+
+        public void SaveDataInTransaction<T>(string storedProcedure, T parameters)
+        {
+            _connection.Execute(storedProcedure, parameters,
+                     commandType: CommandType.StoredProcedure,
+                     transaction: _transaction);
+
+        }
+
+        public void CommitTransaction()
+        {
+            _transaction?.Commit();
+            _connection?.Close();
+
+        }
+        public void RollbackTransaction()
+        {
+            _transaction?.Rollback();
+            _connection?.Close();
+        }
+
+        public void Dispose()
+        {
+            CommitTransaction();
+        }
+
+        // Open connect/start transaction method 
+        // load using the transaction 
+        // save using the transaction
+        // close connection/stop transaction method
+        // Dispose
+
     }
 }
 

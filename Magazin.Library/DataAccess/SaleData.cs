@@ -10,7 +10,7 @@ using System.Linq;
 namespace Magazin.Library.DataAccess
 {
     public class SaleData
-    {   
+    {
         public void SaveSale(SaleModel saleInfo, string cashierId)
         {
             //TODO: Make this SOLID/DRY/Better
@@ -18,7 +18,7 @@ namespace Magazin.Library.DataAccess
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
             ProductData products = new ProductData();
             var newtaxRate = new ConfigHelper();
-            decimal taxRate = newtaxRate.GetTaxRate()/100;
+            decimal taxRate = newtaxRate.GetTaxRate() / 100;
 
             foreach (var item in saleInfo.SaleDetails)
             {
@@ -36,7 +36,7 @@ namespace Magazin.Library.DataAccess
                     throw new Exception($"Product with Id {item.ProductId} could not be found in the database.");
                 }
 
-                detail.PurchasePrice = (productInfo.RetailPrice*detail.Quantity);
+                detail.PurchasePrice = (productInfo.RetailPrice * detail.Quantity);
 
                 if (productInfo.IsTaxable)
                 {
@@ -50,7 +50,8 @@ namespace Magazin.Library.DataAccess
                 details.Add(detail);
             }
 
-            // Create the sale model
+
+            // Create the sale model            
             SaleDBModel sale = new SaleDBModel
             {
                 SubTotal = details.Sum(x => x.PurchasePrice),
@@ -60,20 +61,36 @@ namespace Magazin.Library.DataAccess
 
             sale.Total = sale.SubTotal + sale.Tax;
 
-
-            // Save the Sale model
-            SqlDataAccess sql = new SqlDataAccess();
-            sql.SaveData<SaleDBModel,SaleDBModel>("dbo.spSale_Insert", sale, "MagData");
-
-            // Get the Id from the sale model
-            sale.Id = sql.LoadData<int, dynamic>("dbo.spSale_Lookup", new { sale.CashierId, sale.SaleDate }, "MagData").FirstOrDefault();
-
-            //Finish filling in the sale detail models
-            foreach (var item in details)
+            using (SqlDataAccess sql = new SqlDataAccess())
             {
-                item.SaleId = sale.Id;
-                // Save the sale detail models
-                sql.SaveData<SaleDetailDBModel,SaleDetailDBModel>("dbo.spSaleDetail_Insert", item, "MagData");
+                try
+                {
+                    sql.StartTransaction("MagData");
+
+                    //Save the sale model
+                    sql.SaveDataInTransaction("dbo.spSale_Insert", sale);
+
+                    // Get the Id from the sale model
+                    sale.Id = sql.LoadDataInTransaction<int, dynamic>("dbo.spSale_Lookup", new { sale.CashierId, sale.SaleDate }).FirstOrDefault();
+
+                    //Finish filling in the sale detail models
+                    foreach (var item in details)
+                    {
+                        item.SaleId = sale.Id;
+                        // Save the sale detail models
+                        sql.SaveDataInTransaction("dbo.spSaleDetail_Insert", item);
+                    }
+
+                    sql.CommitTransaction();
+                }
+                catch 
+                {
+
+                    sql.RollbackTransaction();
+                    throw;
+                }
+
+                
             }
         }
 
