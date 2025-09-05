@@ -25,6 +25,8 @@ namespace MagDesktopUI.Library.Api
                 if (response.IsSuccessStatusCode)
                 {
                     // Sale posted successfully?
+                    //("Sale transaction successfully");
+                    
                 }
                 else
                 {
