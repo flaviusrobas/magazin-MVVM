@@ -6,8 +6,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Data.SqlClient; //install NuGet package Microsoft.Data.SqlClient by Microsoft
-using Magazin.Library.Models;
+using Microsoft.Data.SqlClient;
+using Magazin.Library.Models;//install NuGet package Microsoft.Data.SqlClient by Microsoft
 
 /*using System.Data.SqlClient;
 "Message": "An error has occurred.",
@@ -60,12 +60,9 @@ namespace Magazin.Library.Internal.DataAccess
             string connectionString = GetConnectionString(connectionStringName);
 
             _connection = new SqlConnection(connectionString);
-
             _connection.Open();
 
             _transaction = _connection.BeginTransaction();
-
-            isClosed = false;
 
         }
 
@@ -88,42 +85,21 @@ namespace Magazin.Library.Internal.DataAccess
 
         }
 
-        private bool isClosed  = false;
-
         public void CommitTransaction()
         {
             _transaction?.Commit();
             _connection?.Close();
-
-            isClosed = true;
 
         }
         public void RollbackTransaction()
         {
             _transaction?.Rollback();
             _connection?.Close();
-
-            isClosed = true;
         }
 
         public void Dispose()
         {
-            if (isClosed == false)
-            {
-                try
-                {
-                    CommitTransaction();
-                }
-                catch (Exception)
-                {
-                    //TODO - Log this issue 
-                }
-                
-
-            }
-
-            _transaction = null;
-            _connection = null;
+            CommitTransaction();
         }
 
         // Open connect/start transaction method 
