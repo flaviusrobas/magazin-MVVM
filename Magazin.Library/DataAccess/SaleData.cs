@@ -100,13 +100,6 @@ namespace Magazin.Library.DataAccess
             var output = sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { }, "MagData");
             return output;
         }
-
-        //public List<ProductModel> GetProductsById(string Id)
-        //{
-        //    SqlDataAccess sql = new SqlDataAccess();
-        //    var p = new { Id = Id };
-        //    var output = sql.LoadData<ProductModel, dynamic>("dbo.spProduct_GetAll", new { }, "MagData");
-        //    return output;
-        //}
+        
     }
 }
