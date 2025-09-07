@@ -5,12 +5,15 @@ using MagDesktopUI.Library.Api;
 using MagDesktopUI.Library.Helpers;
 using MagDesktopUI.Library.Models;
 using MagDesktopUI.Models;
+using MagDesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MagDesktopUI.Views
 {
@@ -20,20 +23,52 @@ namespace MagDesktopUI.Views
         IConfigHelper _configHelper;
         ISaleEndpoint _saleEndpoint;
         IMapper _mapper;
+        private readonly StatusInfoViewModel _status;
+        private readonly IWindowManager _window;
         public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, 
-            ISaleEndpoint saleEndpoint, IMapper mapper)
+            ISaleEndpoint saleEndpoint, IMapper mapper, StatusInfoViewModel status, IWindowManager window)
         {
             _productEndpoint = productEndpoint;
             _configHelper = configHelper;
             _saleEndpoint = saleEndpoint;
             _mapper = mapper;
+            _status = status;
+            _window = window;
 
         }
 
-        protected override async void OnViewLoaded(object view)
+        protected override async  void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
-            await LoadProducts();
+            try
+            {
+                await LoadProducts();
+            }
+            catch (Exception ex )
+            {
+                dynamic settings = new ExpandoObject();
+                settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                settings.ResizeMode = ResizeMode.NoResize;
+                settings.Title = "System Error";
+
+                var info = IoC.Get<StatusInfoViewModel>();
+
+                if (ex.Message == "Unauthorized")
+                {
+                    _status.UpdateMessage("Unauthorized Access", "You do not permission ti interact with the Sales Form.");
+                    await _window.ShowDialogAsync(_status, null, settings);
+                }
+                else
+                {
+                    _status.UpdateMessage("Fatal Exception", ex.Message);
+                    await _window.ShowDialogAsync(_status, null, settings);
+                }
+
+                ////_status.UpdateMessage("Duplicate", "This is our second call");
+                ////await _window.ShowDialogAsync(_status, null, settings);
+                await TryCloseAsync();
+
+            }
 
         }
 

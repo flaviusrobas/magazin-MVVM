@@ -11,7 +11,7 @@ using Magazin.Library.Models;
 
 namespace Magazin.Controllers
 {
-    [Authorize(Roles ="Cashier,Manager,Admin")]
+    [Authorize(Roles = "Cashier")]
     public class ProductController : ApiController
     {
         public List<ProductModel> Get()
