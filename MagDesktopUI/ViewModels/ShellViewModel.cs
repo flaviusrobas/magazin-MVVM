@@ -14,9 +14,9 @@ namespace MagDesktopUI.ViewModels
         private SalesViewModel _salesVM;
         private ILoggedInUserModel _user;
         private IAPIHelper _apiHelper;
+       
 
-
-        public ShellViewModel(IEventAggregator events, SalesViewModel salesVM, 
+        public ShellViewModel(IEventAggregator events, SalesViewModel salesVM,
             ILoggedInUserModel user, IAPIHelper helper)
         {
             _events = events;
@@ -25,9 +25,10 @@ namespace MagDesktopUI.ViewModels
             _apiHelper = helper;
 
             _events.SubscribeOnPublishedThread(this);
-            
+
             ActivateItemAsync(IoC.Get<LoginViewModel>());
-        }      
+          
+        }
 
 
         public bool IsLoggedIn
@@ -47,8 +48,13 @@ namespace MagDesktopUI.ViewModels
 
 
         public void ExitApplication()
-        {            
-            TryCloseAsync(); 
+        {
+            TryCloseAsync();
+        }
+
+        public void UserManagement()
+        {
+            ActivateItemAsync(IoC.Get<UserDisplayViewModel>());
         }
 
         public void LogOut()
