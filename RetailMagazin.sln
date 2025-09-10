@@ -11,13 +11,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagDesktopUI", "MagDesktopU
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magazin.Library", "Magazin.Library\Magazin.Library.csproj", "{12F94B29-FE0A-4E12-A836-C376198E9F0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagDesktopUI.Library", "MagDesktopUI.Library\MagDesktopUI.Library.csproj", "{AB6EE01B-BDFB-477F-8381-931C4DE83050}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{29E7614A-D85F-4400-BA56-8EEC4EA51341}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{0FCFC484-CC6B-4FF8-B336-433E582E1C77}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solutions Items", "Solutions Items", "{D79FAD17-2CD4-4D1A-B0E0-B67BDFA3D889}"
+	ProjectSection(SolutionItems) = preProject
+		Roadmap.txt = Roadmap.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagDesktopUI.Library", "MagDesktopUI.Library\MagDesktopUI.Library.csproj", "{AB6EE01B-BDFB-477F-8381-931C4DE83050}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -67,7 +67,7 @@ namespace MagDesktopUI.ViewModels
 
         public Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
         {
-            ActivateItemAsync(_salesVM);
+            ActivateItemAsync(IoC.Get<SalesViewModel>());
             NotifyOfPropertyChange(() => IsLoggedIn);
             return Task.CompletedTask;
         }
