@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solutions Items", "Solution
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagDesktopUI.Library", "MagDesktopUI.Library\MagDesktopUI.Library.csproj", "{AB6EE01B-BDFB-477F-8381-931C4DE83050}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagazinApi", "MagazinApi\MagazinApi.csproj", "{F4CE0FE4-E038-4FA0-9459-C9D7EFBB5B38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{AB6EE01B-BDFB-477F-8381-931C4DE83050}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB6EE01B-BDFB-477F-8381-931C4DE83050}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB6EE01B-BDFB-477F-8381-931C4DE83050}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4CE0FE4-E038-4FA0-9459-C9D7EFBB5B38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4CE0FE4-E038-4FA0-9459-C9D7EFBB5B38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4CE0FE4-E038-4FA0-9459-C9D7EFBB5B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4CE0FE4-E038-4FA0-9459-C9D7EFBB5B38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{D4EFBF74-61B2-4BF7-B448-20C2A5A3575B} = {0FCFC484-CC6B-4FF8-B336-433E582E1C77}
 		{12F94B29-FE0A-4E12-A836-C376198E9F0C} = {29E7614A-D85F-4400-BA56-8EEC4EA51341}
 		{AB6EE01B-BDFB-477F-8381-931C4DE83050} = {0FCFC484-CC6B-4FF8-B336-433E582E1C77}
+		{F4CE0FE4-E038-4FA0-9459-C9D7EFBB5B38} = {29E7614A-D85F-4400-BA56-8EEC4EA51341}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3B7A2CFD-F75B-48DB-BE70-4C3F7EF6DCB7}
