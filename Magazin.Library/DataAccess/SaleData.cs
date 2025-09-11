@@ -3,6 +3,7 @@
 using Magazin.Library.Internal.DataAccess;
 using Magazin.Library.Models;
 using MagDesktopUI.Library.Helpers;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,17 @@ namespace Magazin.Library.DataAccess
 {
     public class SaleData
     {
+        private readonly IConfiguration _config;
+        public SaleData(IConfiguration config)
+        {
+            _config = config;
+        }
         public void SaveSale(SaleModel saleInfo, string cashierId)
         {
             //TODO: Make this SOLID/DRY/Better
             // Start filling in the sale details models we will save to the DB
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
-            ProductData products = new ProductData();
+            ProductData products = new ProductData(_config);
             var newtaxRate = new ConfigHelper();
             decimal taxRate = newtaxRate.GetTaxRate() / 100;
 
@@ -61,7 +67,7 @@ namespace Magazin.Library.DataAccess
 
             sale.Total = sale.SubTotal + sale.Tax;
 
-            using (SqlDataAccess sql = new SqlDataAccess())
+            using (SqlDataAccess sql = new SqlDataAccess(_config))
             {
                 try
                 {
@@ -96,7 +102,7 @@ namespace Magazin.Library.DataAccess
 
         public List<SaleReportModel> GetSaleReports()
         { 
-            SqlDataAccess sql = new SqlDataAccess();
+            SqlDataAccess sql = new SqlDataAccess(_config);
             var output = sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { }, "MagData");
             return output;
         }

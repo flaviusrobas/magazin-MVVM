@@ -15,13 +15,20 @@ namespace MagazinApi.Controllers
     [ApiController]
     [Authorize]
     public class UserController : ControllerBase
-    {
+    {      
+        
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        public UserController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        private readonly IConfiguration _config;
+
+
+        public UserController(ApplicationDbContext context,
+            UserManager<IdentityUser> userManager,
+            IConfiguration config)
         {
             _context = context;
             _userManager = userManager;
+            _config = config;
         }
 
         [HttpGet]
@@ -30,7 +37,7 @@ namespace MagazinApi.Controllers
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //old way - RequestContext.Principal.Identity.GetUserId();
 
-            UserData data = new UserData();
+            UserData data = new UserData(_config);
 
             return data.GetUsersById(userId).First();
 
