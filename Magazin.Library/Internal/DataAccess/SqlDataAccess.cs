@@ -29,9 +29,7 @@ namespace Magazin.Library.Internal.DataAccess
         }
         public string GetConnectionString(string name)
         {  
-            return _config.GetConnectionString(name);
-
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            return _config.GetConnectionString(name);           
         }
 
         //Implementation of LoadData method

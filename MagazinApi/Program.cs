@@ -1,6 +1,13 @@
 using MagazinApi.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+
+//using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+
 
 namespace MagazinApi
 {
@@ -16,11 +23,39 @@ namespace MagazinApi
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddIdentityApiEndpoints<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
+
+            builder.Services.AddAuthentication(option =>
+            {
+                option.DefaultChallengeScheme = "JwtBearer";
+                option.DefaultAuthenticateScheme = "JwtBearer";
+            })
+                .AddJwtBearer("JwtBearer", jwtBearerOptions =>
+                {
+                    jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                    {                       
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("A22AbmL85NqT3RiN9i6pt734jV3kiJvT")),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.FromMinutes(5) //5 minute tolerance for the expiration date
+                    };
+                }
+                );
+
+            builder.Services.AddSwaggerGen(setup =>
+            {
+                setup.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Magazin API",
+                    Version = "v1"
+                });
+            });
 
             var app = builder.Build();
 
@@ -41,7 +76,14 @@ namespace MagazinApi
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Magazin API V1");
+            });
 
             app.MapControllerRoute(
                 name: "default",

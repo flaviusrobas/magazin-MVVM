@@ -22,14 +22,16 @@ namespace MagazinApi.Controllers
         public IConfiguration Config { get; }
 
         [Authorize(Roles = "Admin,Manager")]
+        [HttpGet]
         public List<InventoryModel> Get()
         {
             InventoryData data = new InventoryData(_config);
             return data.GetInventory();
         }
 
-        [Authorize(Roles = "WarehouseWorker")]
+        
         [Authorize(Roles = "Admin")]
+        [HttpPost]
         public void Post(InventoryModel item)
         {
             InventoryData data = new InventoryData(_config);
