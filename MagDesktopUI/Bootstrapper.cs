@@ -6,7 +6,6 @@ using MagDesktopUI.Library.Helpers;
 using MagDesktopUI.Library.Models;
 using MagDesktopUI.Models;
 using MagDesktopUI.ViewModels;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
