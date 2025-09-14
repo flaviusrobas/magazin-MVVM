@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using MagDesktopUI.Library.Api;
 using MagDesktopUI.Library.Models;
 using MagDesktopUI.Models;

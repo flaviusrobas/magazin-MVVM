@@ -1,15 +1,8 @@
 ﻿using Dapper;
-using Magazin.Library.Models;
 using Microsoft.Data.SqlClient; //install NuGet package Microsoft.Data.SqlClient by Microsoft
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Configuration.Provider;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 /*using System.Data.SqlClient;
 "Message": "An error has occurred.",

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace MagDesktopUI.Views
 {
     /// <summary>
-    /// Interaction logic for UserDisplayView.xaml
+    /// Interaction logic for StatusInfo.xaml
     /// </summary>
-    public partial class UserDisplayView : UserControl
+    public partial class StatusInfo : UserControl
     {
-        public UserDisplayView()
+        public StatusInfo()
         {
             InitializeComponent();
         }

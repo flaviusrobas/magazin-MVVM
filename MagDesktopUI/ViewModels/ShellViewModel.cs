@@ -26,7 +26,7 @@ namespace MagDesktopUI.ViewModels
 
             _events.SubscribeOnPublishedThread(this);
 
-            ActivateItemAsync(IoC.Get<LoginViewModel>());
+            ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
           
         }
 
@@ -52,24 +52,24 @@ namespace MagDesktopUI.ViewModels
             TryCloseAsync();
         }
 
-        public void UserManagement()
+        public  async Task UserManagement()
         {
-            ActivateItemAsync(IoC.Get<UserDisplayViewModel>());
+            await ActivateItemAsync(IoC.Get<UserDisplayViewModel>(), new CancellationToken());
         }
 
-        public void LogOut()
+        public async Task LogOut()
         {
             _user.ResetUserModel();
             _apiHelper.LogOffUser();
-            ActivateItemAsync(IoC.Get<LoginViewModel>());
+            await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
             NotifyOfPropertyChange(() => IsLoggedIn);
         }
 
-        public Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
+        public async Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
         {
-            ActivateItemAsync(IoC.Get<SalesViewModel>());
-            NotifyOfPropertyChange(() => IsLoggedIn);
-            return Task.CompletedTask;
+            await ActivateItemAsync(IoC.Get<SalesViewModel>(), cancellationToken);
+            //await ActivateItemAsync(_salesVM, cancellationToken);
+            NotifyOfPropertyChange(() => IsLoggedIn);           
         }
 
 

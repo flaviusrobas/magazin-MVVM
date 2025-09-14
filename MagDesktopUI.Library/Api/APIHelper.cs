@@ -1,20 +1,14 @@
 ﻿using MagDesktopUI.Library.Models;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using System.Configuration;
+using System.Net.Http.Headers;
+
 
 
 namespace MagDesktopUI.Library.Api
 {
     public class APIHelper : IAPIHelper
     {
-        private HttpClient _apiClient; //{ get; set; }
-        /* va fuctiona doar ineriorul clasei,
-         * se va instantia sigura si 
-         * va trai pe durata de viata a acestei instante de clasa*/
+        private HttpClient _apiClient; 
         private ILoggedInUserModel _loggedInUser;
 
         public APIHelper(ILoggedInUserModel loggedInUser)
@@ -29,8 +23,8 @@ namespace MagDesktopUI.Library.Api
           
         }
         private void InitializeClient()
-        {
-            string api = ConfigurationManager.AppSettings["api"];
+        {            
+            string? api = ConfigurationManager.AppSettings["api"]; 
 
             _apiClient = new HttpClient();
             _apiClient.BaseAddress = new Uri(api);

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="MagDesktopUI.Views.StatusInfoView"
+﻿<UserControl x:Class="MagDesktopUI.Views.StatusInfo"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -13,6 +13,6 @@
             <Button x:Name="Clode" Padding="10" Margin="20">Close</Button>
 
         </StackPanel>
-            
+
     </Grid>
 </UserControl>

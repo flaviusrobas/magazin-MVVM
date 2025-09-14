@@ -1,6 +1,4 @@
-﻿//using Magazin.Library.Internal.DataAccess;
-//using Magazin.Library.Internal.DataAccess;
-using Magazin.Library.Internal.DataAccess;
+﻿using Magazin.Library.Internal.DataAccess;
 using Magazin.Library.Models;
 using MagDesktopUI.Library.Helpers;
 using Microsoft.Extensions.Configuration;

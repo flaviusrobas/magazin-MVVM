@@ -1,11 +1,7 @@
-﻿using NLog.Internal;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+
 
 namespace MagDesktopUI.Library.Helpers
 {
@@ -14,7 +10,8 @@ namespace MagDesktopUI.Library.Helpers
         // To Do this from config to the API
         public decimal GetTaxRate()
         {
-            string rateText = ConfigurationManager.AppSettings["TaxRate"];
+            string? rateText = ConfigurationManager.AppSettings["TaxRate"];
+            
 
             bool IsValidTaxRate = Decimal.TryParse(rateText, out decimal output);
 
