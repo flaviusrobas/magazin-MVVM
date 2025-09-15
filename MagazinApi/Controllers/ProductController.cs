@@ -11,19 +11,27 @@ namespace MagazinApi.Controllers
     [Authorize(Roles = "Cashier")]
     public class ProductController : ControllerBase
     {
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
 
-        public ProductController(IConfiguration config)
+        //public ProductController(IConfiguration config)
+        //{
+        //    _config = config;
+        //}
+
+        private readonly IProductData _productData;
+
+        public ProductController(IProductData productData)
         {
-            _config = config;
+            _productData = productData;
         }
+
 
         [HttpGet]
         public List<ProductModel> Get()
         {
-            ProductData data = new ProductData(_config);
+            //ProductData data = new ProductData(_config);
 
-            return data.GetProductsById();
+            return _productData.GetProductsById();
 
         }
     }

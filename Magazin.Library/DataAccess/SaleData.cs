@@ -8,19 +8,22 @@ using System.Linq;
 
 namespace Magazin.Library.DataAccess
 {
-    public class SaleData
+    public class SaleData : ISaleData
     {
-        private readonly IConfiguration _config;
-        public SaleData(IConfiguration config)
+        //private readonly IConfiguration _config;
+        private readonly IProductData _productData;
+        private readonly ISqlDataAccess _sql;
+        public SaleData(IProductData productData, ISqlDataAccess sql)
         {
-            _config = config;
+            _productData = productData;
+            _sql = sql;
         }
         public void SaveSale(SaleModel saleInfo, string cashierId)
         {
             //TODO: Make this SOLID/DRY/Better
             // Start filling in the sale details models we will save to the DB
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
-            ProductData products = new ProductData(_config);
+            //ProductData products = new ProductData(_config);
             var newtaxRate = new ConfigHelper();
             decimal taxRate = newtaxRate.GetTaxRate() / 100;
 
@@ -33,11 +36,11 @@ namespace Magazin.Library.DataAccess
                 };
 
                 //Get the information about this product
-                var productInfo = products.GetProductById(item.ProductId);
+                var productInfo = _productData.GetProductById(detail.ProductId);
 
                 if (productInfo == null)
                 {
-                    throw new Exception($"Product with Id {item.ProductId} could not be found in the database.");
+                    throw new Exception($"Product with Id {detail.ProductId} could not be found in the database.");
                 }
 
                 detail.PurchasePrice = (productInfo.RetailPrice * detail.Quantity);
@@ -65,45 +68,43 @@ namespace Magazin.Library.DataAccess
 
             sale.Total = sale.SubTotal + sale.Tax;
 
-            using (SqlDataAccess sql = new SqlDataAccess(_config))
+            //using (SqlDataAccess sql = new SqlDataAccess(_config)) {}
+
+            try
             {
-                try
+                _sql.StartTransaction("MagData");
+
+                //Save the sale model
+                _sql.SaveDataInTransaction("dbo.spSale_Insert", sale);
+
+                // Get the Id from the sale model
+                sale.Id = _sql.LoadDataInTransaction<int, dynamic>("dbo.spSale_Lookup", new { sale.CashierId, sale.SaleDate }).FirstOrDefault();
+
+                //Finish filling in the sale detail models
+                foreach (var item in details)
                 {
-                    sql.StartTransaction("MagData");
-
-                    //Save the sale model
-                    sql.SaveDataInTransaction("dbo.spSale_Insert", sale);
-
-                    // Get the Id from the sale model
-                    sale.Id = sql.LoadDataInTransaction<int, dynamic>("dbo.spSale_Lookup", new { sale.CashierId, sale.SaleDate }).FirstOrDefault();
-
-                    //Finish filling in the sale detail models
-                    foreach (var item in details)
-                    {
-                        item.SaleId = sale.Id;
-                        // Save the sale detail models
-                        sql.SaveDataInTransaction("dbo.spSaleDetail_Insert", item);
-                    }
-
-                    sql.CommitTransaction();
-                }
-                catch 
-                {
-
-                    sql.RollbackTransaction();
-                    throw;
+                    item.SaleId = sale.Id;
+                    // Save the sale detail models
+                    _sql.SaveDataInTransaction("dbo.spSaleDetail_Insert", item);
                 }
 
-                
+                _sql.CommitTransaction();
             }
+            catch
+            {
+
+                _sql.RollbackTransaction();
+                throw;
+            }
+
         }
 
         public List<SaleReportModel> GetSaleReports()
-        { 
-            SqlDataAccess sql = new SqlDataAccess(_config);
-            var output = sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { }, "MagData");
+        {
+            //SqlDataAccess sql = new SqlDataAccess(_config);
+            var output = _sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { }, "MagData");
             return output;
         }
-        
+
     }
 }

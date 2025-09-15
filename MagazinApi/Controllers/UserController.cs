@@ -15,20 +15,22 @@ namespace MagazinApi.Controllers
     [ApiController]
     [Authorize]
     public class UserController : ControllerBase
-    {      
-        
+    {
+
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
+        private readonly IUserData _userData;
 
 
         public UserController(ApplicationDbContext context,
-            UserManager<IdentityUser> userManager,
-            IConfiguration config)
+                              UserManager<IdentityUser> userManager,
+                              IUserData userData)
         {
             _context = context;
             _userManager = userManager;
-            _config = config;
+            //_config = config;
+            _userData = userData;
         }
 
         [HttpGet]
@@ -37,9 +39,9 @@ namespace MagazinApi.Controllers
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //old way - RequestContext.Principal.Identity.GetUserId();
 
-            UserData data = new UserData(_config);
+            //UserData data = new UserData(_config);
 
-            return data.GetUsersById(userId).First();
+            return _userData.GetUsersById(userId).First();
 
         }
 
@@ -61,7 +63,7 @@ namespace MagazinApi.Controllers
                 ApplicationUserModel u = new ApplicationUserModel()
                 {
                     Id = user.Id,
-                    Email = user.Email,                   
+                    Email = user.Email,
                 };
 
                 u.Roles = userRoles.Where(x => x.UserId == u.Id).ToDictionary(key => key.RoleId, val => val.Name);

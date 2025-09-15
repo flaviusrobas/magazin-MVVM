@@ -1,3 +1,5 @@
+using Magazin.Library.DataAccess;
+using Magazin.Library.Internal.DataAccess;
 using MagazinApi.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -28,6 +30,13 @@ namespace MagazinApi
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
+
+            //Personal services
+            builder.Services.AddTransient<IInventoryData, InventoryData>();
+            builder.Services.AddTransient<IProductData, ProductData>();
+            builder.Services.AddTransient<ISaleData, SaleData>();
+            builder.Services.AddTransient<IUserData, UserData>();
+            builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 
             builder.Services.AddAuthentication(option =>
             {

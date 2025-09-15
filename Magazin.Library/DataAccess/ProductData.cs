@@ -9,27 +9,34 @@ using System.Threading.Tasks;
 
 namespace Magazin.Library.DataAccess
 {
-    public class ProductData
+    public class ProductData : IProductData
     {
-        private readonly IConfiguration _config;
-        public ProductData(IConfiguration config)
+        //private readonly IConfiguration _config;
+        //public ProductData(IConfiguration config)
+        //{
+        //    _config = config;           
+        //}
+
+
+        private readonly ISqlDataAccess _sql;
+        public ProductData(ISqlDataAccess sql)
         {
-            _config = config;
+            _sql = sql;
         }
         public List<ProductModel> GetProductsById()
         {
-            SqlDataAccess sql = new SqlDataAccess(_config);
-            
-            var output = sql.LoadData<ProductModel, dynamic>("dbo.spProduct_GetAll", new { }, "MagData");
+            //SqlDataAccess sql = new SqlDataAccess(_config);
+
+            var output = _sql.LoadData<ProductModel, dynamic>("dbo.spProduct_GetAll", new { }, "MagData");
 
             return output;
         }
 
         public ProductModel GetProductById(int productId)
         {
-            SqlDataAccess sql = new SqlDataAccess(_config);
+            //SqlDataAccess sql = new SqlDataAccess(_config);
 
-            var output = sql.LoadData<ProductModel, dynamic>("dbo.spProduct_GetById", new { Id = productId }, "MagData").FirstOrDefault();
+            var output = _sql.LoadData<ProductModel, dynamic>("dbo.spProduct_GetById", new { Id = productId }, "MagData").FirstOrDefault();
 
             return output;
         }

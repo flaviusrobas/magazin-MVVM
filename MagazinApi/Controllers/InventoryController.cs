@@ -12,21 +12,24 @@ namespace MagazinApi.Controllers
 
     public class InventoryController : ControllerBase
     {
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
+        //public InventoryController(IConfiguration config)
+        //{
+        //    _config = config;
+        //}
 
-        public InventoryController(IConfiguration config)
-        {
-            _config = config;
+        private readonly IInventoryData _inventoryData;
+        public InventoryController(IInventoryData inventoryData)
+        {            
+            _inventoryData = inventoryData;
         }
-
-        public IConfiguration Config { get; }
 
         [Authorize(Roles = "Admin,Manager")]
         [HttpGet]
         public List<InventoryModel> Get()
         {
-            InventoryData data = new InventoryData(_config);
-            return data.GetInventory();
+            //InventoryData data = new InventoryData(_config);
+            return _inventoryData.GetInventory();
         }
 
         
@@ -34,8 +37,9 @@ namespace MagazinApi.Controllers
         [HttpPost]
         public void Post(InventoryModel item)
         {
-            InventoryData data = new InventoryData(_config);
-            data.SaveInventoryRecord(item);
+            //InventoryData data = new InventoryData(_config);
+            _inventoryData.SaveInventoryRecord(item);
+           
         }
     }
 }

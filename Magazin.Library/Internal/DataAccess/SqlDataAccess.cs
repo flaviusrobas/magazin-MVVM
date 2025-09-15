@@ -13,7 +13,7 @@ using System.Data;
 namespace Magazin.Library.Internal.DataAccess
 
 {
-    internal class SqlDataAccess : IDisposable
+    public class SqlDataAccess : IDisposable, ISqlDataAccess
     {
         private readonly IConfiguration _config;
         public SqlDataAccess(IConfiguration config)
@@ -21,8 +21,8 @@ namespace Magazin.Library.Internal.DataAccess
             _config = config;
         }
         public string GetConnectionString(string name)
-        {  
-            return _config.GetConnectionString(name);           
+        {
+            return _config.GetConnectionString(name);
         }
 
         //Implementation of LoadData method
@@ -87,7 +87,7 @@ namespace Magazin.Library.Internal.DataAccess
 
         }
 
-        private bool isClosed  = false;
+        private bool isClosed = false;
 
         public void CommitTransaction()
         {
@@ -117,7 +117,7 @@ namespace Magazin.Library.Internal.DataAccess
                 {
                     //TODO - Log this issue 
                 }
-                
+
 
             }
 

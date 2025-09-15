@@ -30,9 +30,10 @@ namespace MagDesktopUI
                 "PasswordChanged");
         }
 
-        /*Caliburn.Micro NuGet
-              IWindowManager - interfata pentru managerul de ferestre
-              SimpleContainer - container de dependente
+        /*Caliburn.Micro NuGet contain:
+         *    BootstrapperBase - Bootstrapper framework;
+              IWindowManager - interfata pentru managerul de ferestre;
+              SimpleContainer - container de dependente;
               IEventAggregator - interfata pentru agregatorul de evenimente*/
 
 
@@ -59,13 +60,13 @@ namespace MagDesktopUI
 
             // Register the services and view models
             _container
-                .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>()
-                .Singleton<ILoggedInUserModel, LoggedInUserModel>()
-                .Singleton<IConfigHelper, ConfigHelper>()
-                .Singleton<IAPIHelper, APIHelper>();
+                .Singleton<IWindowManager, WindowManager>() // WindowManager is used to open new windows and dialogs
+                .Singleton<IEventAggregator, EventAggregator>() // EventAggregator is used for communication between view models
+                .Singleton<ILoggedInUserModel, LoggedInUserModel>() // LoggedInUserModel is used to store the logged in user information
+                .Singleton<IConfigHelper, ConfigHelper>() // ConfigHelper is used to read the configuration from the app.config file
+                .Singleton<IAPIHelper, APIHelper>(); // APIHelper is used to make API calls - este in singleton ca sa avem o singura instanta de HttpClient
 
-          
+
             // putem sa cerem apiHelper oriunde ne aflam in aplicatie si vom obtine aceeasi instanta
 
             // Register all ViewModels in the assembly that end with "ViewModel"
