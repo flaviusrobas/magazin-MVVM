@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient; //install NuGet package Microsoft.Data.SqlClient by Microsoft
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Data;
 
 
@@ -16,9 +17,11 @@ namespace Magazin.Library.Internal.DataAccess
     public class SqlDataAccess : IDisposable, ISqlDataAccess
     {
         private readonly IConfiguration _config;
-        public SqlDataAccess(IConfiguration config)
+        private readonly ILogger _logger;
+        public SqlDataAccess(IConfiguration config, ILogger<SqlDataAccess> logger)
         {
             _config = config;
+            _logger = logger;
         }
         public string GetConnectionString(string name)
         {
@@ -113,9 +116,9 @@ namespace Magazin.Library.Internal.DataAccess
                 {
                     CommitTransaction();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    //TODO - Log this issue 
+                    _logger.LogError(ex.Message + "Error in Dispose CommitTransaction: ");
                 }
 
 

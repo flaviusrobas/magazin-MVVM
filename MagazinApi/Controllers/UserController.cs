@@ -21,23 +21,26 @@ namespace MagazinApi.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         //private readonly IConfiguration _config;
         private readonly IUserData _userData;
+        private readonly ILogger<UserController> _logger;
 
 
         public UserController(ApplicationDbContext context,
                               UserManager<IdentityUser> userManager,
-                              IUserData userData)
+                              IUserData userData,
+                              ILogger<UserController> logger)
         {
             _context = context;
             _userManager = userManager;
             //_config = config;
             _userData = userData;
+            _logger = logger;
         }
 
         [HttpGet]
         public UserModel GetById()
         {
 
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //old way - RequestContext.Principal.Identity.GetUserId();
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
 
             //UserData data = new UserData(_config);
 
@@ -100,7 +103,14 @@ namespace MagazinApi.Controllers
         [Route("Admin/AddRole")]
         public async Task AddARole(UserRolePairModel pairing)
         {
+            string loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInUser = _userData.GetUsersById(loggedInUserId).First();
+
             var user = await _userManager.FindByIdAsync(pairing.UserId);
+
+            // Save to log file 
+            _logger.LogInformation("Admin {Admin} added user { User} to role { Role}", loggedInUserId, user.Id, pairing.RoleName );
+
             await _userManager.AddToRoleAsync(user, pairing.RoleName);
 
         }
