@@ -1,14 +1,12 @@
 using Magazin.Library.DataAccess;
 using Magazin.Library.Internal.DataAccess;
 using MagazinApi.Data;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-
-//using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+
+
 
 
 namespace MagazinApi
@@ -18,6 +16,9 @@ namespace MagazinApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // Fix: Get secret key from builder.Configuration, which implements IConfiguration
+            var secretkey = builder.Configuration.GetValue<string>("Secrets:SecurityKey");
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -46,9 +47,9 @@ namespace MagazinApi
                 .AddJwtBearer("JwtBearer", jwtBearerOptions =>
                 {
                     jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
-                    {                       
+                    {                      
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("A22AbmL85NqT3RiN9i6pt734jV3kiJvT")),
+                        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretkey)),
                         ValidateIssuer = false,
                         ValidateAudience = false,
                         ValidateLifetime = true,
