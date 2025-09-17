@@ -50,6 +50,8 @@ namespace MagDesktopUI.ViewModels
                 UserRoles = new BindingList<string>(value.Roles.Select(r => r.Value).ToList());
                 LoadRoles().GetAwaiter();
                 NotifyOfPropertyChange(() => SelectedUser);
+                NotifyOfPropertyChange(() => CanAddSelectedRole);
+                NotifyOfPropertyChange(() => CanRemoveSelectedRole);
             }
         }
 
@@ -62,6 +64,7 @@ namespace MagDesktopUI.ViewModels
             { 
                 _selectedUserRole = value; 
                 NotifyOfPropertyChange(() => SelectedUserRole);
+                NotifyOfPropertyChange(() => CanRemoveSelectedRole);
             }
         }
 
@@ -74,6 +77,7 @@ namespace MagDesktopUI.ViewModels
             {
                 _selectedAvailableRole = value; 
                 NotifyOfPropertyChange(() => SelectedAvailableRole);
+                NotifyOfPropertyChange(() => CanAddSelectedRole);
             }
         }
 
@@ -168,6 +172,9 @@ namespace MagDesktopUI.ViewModels
         private async Task LoadRoles()
         {
             var roles = await _userEndpoint.GetAllRoles();
+
+            AvailableRoles.Clear();
+
             foreach (var role in roles)
             {
                 if (UserRoles.IndexOf(role.Value) < 0)
@@ -179,6 +186,22 @@ namespace MagDesktopUI.ViewModels
             
         }
 
+        public bool CanAddSelectedRole // Caliburn Micro
+        {
+            get
+            {
+                //return SelectedUser != null && !string.IsNullOrWhiteSpace(SelectedAvailableRole);
+                if(SelectedUser is null || SelectedAvailableRole is null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
         public async Task AddSelectedRole()
         {
            await _userEndpoint.AddUserToRole(SelectedUser.Id, SelectedAvailableRole);
@@ -186,6 +209,22 @@ namespace MagDesktopUI.ViewModels
            UserRoles.Add(SelectedAvailableRole);
            AvailableRoles.Remove(SelectedAvailableRole);
 
+        }
+
+        public bool CanRemoveSelectedRole // Caliburn Micro
+        {
+            get
+            {
+                //return SelectedUser != null && !string.IsNullOrWhiteSpace(SelectedAvailableRole);
+                if (SelectedUser is null || SelectedUserRole is null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
         }
 
         public async Task RemoveSelectedRole()
