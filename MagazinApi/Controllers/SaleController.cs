@@ -40,5 +40,14 @@ namespace MagazinApi.Controllers
             //SaleData data = new SaleData(_config);
             return _saleData.GetSaleReports();
         }
+
+        [AllowAnonymous]
+        [Route("GetTaxRate")]
+        [HttpGet]
+        public decimal GetTaxRate()
+        {
+            //SaleData data = new SaleData(_config);
+            return _saleData.GetTaxRate();
+        }
     }
 }

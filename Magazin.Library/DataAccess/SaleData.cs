@@ -4,19 +4,40 @@ using MagDesktopUI.Library.Helpers;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 
 namespace Magazin.Library.DataAccess
 {
     public class SaleData : ISaleData
     {
-        //private readonly IConfiguration _config;
+        
         private readonly IProductData _productData;
         private readonly ISqlDataAccess _sql;
-        public SaleData(IProductData productData, ISqlDataAccess sql)
+        private readonly IConfiguration _config;
+        public SaleData(IProductData productData, ISqlDataAccess sql, IConfiguration config)
         {
             _productData = productData;
             _sql = sql;
+            _config = config;
+
+        }
+
+        public decimal GetTaxRate()
+        {
+            string rateText = _config.GetValue<string>("TaxRate"); //ConfigurationManager.AppSettings["TaxRate"];
+
+
+            bool IsValidTaxRate = Decimal.TryParse(rateText, out decimal output);
+
+            if (IsValidTaxRate == false)
+            {
+                throw new ConfigurationErrorsException("The Tax Rate is not set up properly");
+            }
+
+            output /= 100;
+
+            return output;
         }
         public void SaveSale(SaleModel saleInfo, string cashierId)
         {
@@ -24,8 +45,8 @@ namespace Magazin.Library.DataAccess
             // Start filling in the sale details models we will save to the DB
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
             //ProductData products = new ProductData(_config);
-            var newtaxRate = new ConfigHelper();
-            decimal taxRate = newtaxRate.GetTaxRate() / 100;
+            //var newtaxRate = new ConfigHelper();
+            var taxRate = GetTaxRate();
 
             foreach (var item in saleInfo.SaleDetails)
             {
