@@ -20,11 +20,20 @@ namespace MagazinApi
             // Fix: Get secret key from builder.Configuration, which implements IConfiguration
             var secretkey = builder.Configuration.GetValue<string>("Secrets:SecurityKey");
 
+
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+            builder.Services.AddCors(option =>
+            {
+                option.AddPolicy("OpenCorsPolicy", opt =>
+                          opt.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod());                    
+            });
 
             builder.Services.AddIdentityApiEndpoints<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
@@ -82,6 +91,7 @@ namespace MagazinApi
             }
 
             app.UseHttpsRedirection();
+            app.UseCors("OpenCorsPolicy"); // activare UseCors cu politica definitã
             app.UseStaticFiles();
 
             app.UseRouting();
