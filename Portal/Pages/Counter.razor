@@ -1,5 +1,14 @@
 ﻿@page "/counter"
 
+<AuthorizeView Roles="Manager">
+    <Authorized >
+        The user (@context.User.FindFirst(ClaimTypes.Name).Value) is authorized.
+    </Authorized>
+    <NotAuthorized>
+        <h3>The user is not authorized</h3>        
+    </NotAuthorized>
+</AuthorizeView>
+
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
