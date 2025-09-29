@@ -10,22 +10,24 @@ namespace Portal.Authentication
         {
             var claims = new List<Claim>();
             var payload = jwt.Split('.')[1];
+
             var jsonBytes = ParseBase64WithoutPadding(payload);
+
             var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
-            //if (keyValuePairs is not null)
-            //{
-                ExtractRolesFromJWT(claims, keyValuePairs);
-                claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString() ?? string.Empty)));
-            //}
+
+            ExtractRolesFromJWT(claims, keyValuePairs);
+
+            claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString() ?? string.Empty)));
+
             return claims;
         }
         private static void ExtractRolesFromJWT(List<Claim> claims, Dictionary<string, object> keyValuePairs)
         {
             keyValuePairs.TryGetValue(ClaimTypes.Role, out object roles);
-            if ( roles is not null)
+            if (roles is not null)
             {
                 var parsedRoles = roles.ToString().Trim().TrimStart('[').TrimEnd(']').Split(',');
-               
+
                 if (parsedRoles.Length > 1)
                 {
                     foreach (var parsrole in parsedRoles)
@@ -42,7 +44,7 @@ namespace Portal.Authentication
             }
         }
 
-           
+
 
         private static byte[] ParseBase64WithoutPadding(string base64)
         {

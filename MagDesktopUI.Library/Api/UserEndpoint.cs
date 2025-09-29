@@ -1,10 +1,4 @@
 ﻿using MagDesktopUI.Library.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MagDesktopUI.Library.Api
 {
@@ -26,6 +20,24 @@ namespace MagDesktopUI.Library.Api
                     return result;
                 }
                 else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+        public async Task CreateUser(CreateUserModel model)
+        {
+            var data = new {
+                model.FirstName,
+                model.LastName,
+                model.EmailAddress,
+                model.Password,
+                model.ConfirmPassword
+            };
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/User/Register", data))
+            {
+                if (response.IsSuccessStatusCode == false)
                 {
                     throw new Exception(response.ReasonPhrase);
                 }

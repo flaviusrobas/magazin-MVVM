@@ -29,7 +29,7 @@ namespace MagazinApi
 
             builder.Services.AddCors(option =>
             {
-                option.AddPolicy("OpenCorsPolicy", opt =>
+                option.AddPolicy(name: "OpenCorsPolicy", opt =>
                           opt.AllowAnyOrigin()
                             .AllowAnyHeader()
                             .AllowAnyMethod());                    
@@ -91,7 +91,7 @@ namespace MagazinApi
             }
 
             app.UseHttpsRedirection();
-            app.UseCors("OpenCorsPolicy"); // activare UseCors cu politica definitã
+            app.UseCors(policyName: "OpenCorsPolicy"); // activare UseCors cu politica definitã
             app.UseStaticFiles();
 
             app.UseRouting();

@@ -28,5 +28,10 @@ namespace Magazin.Library.DataAccess
 
             return output;
         }
+
+        public void CreateUser(UserModel user)
+        {
+            _sql.SaveData<UserModel, dynamic>("dbo.spUser_Insert", new { user.ID, user.FirstName, user.LastName, user.EmailAddress }, "MagData");
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MagDesktopUI.Library.Models;
+using Microsoft.Extensions.Configuration;
 using System.Configuration;
 using System.Net.Http.Headers;
 
@@ -8,23 +9,27 @@ namespace MagDesktopUI.Library.Api
 {
     public class APIHelper : IAPIHelper
     {
-        private HttpClient _apiClient; 
+        private HttpClient _apiClient;
         private ILoggedInUserModel _loggedInUser;
+        private readonly IConfiguration _config;
 
-        public APIHelper(ILoggedInUserModel loggedInUser)
+        public APIHelper(ILoggedInUserModel loggedInUser, IConfiguration config)
         {
             InitializeClient();
             _loggedInUser = loggedInUser;
+            _config = config;
+
+
         }
 
         public HttpClient ApiClient
         {
             get { return _apiClient; }
-          
+
         }
         private void InitializeClient()
-        {            
-            string? api = ConfigurationManager.AppSettings["api"]; 
+        {
+            string? api = System.Configuration.ConfigurationManager.AppSettings["api"];
 
             _apiClient = new HttpClient();
             _apiClient.BaseAddress = new Uri(api);
@@ -47,9 +52,10 @@ namespace MagDesktopUI.Library.Api
                 {
                     var result = await response.Content.ReadAsAsync<AuthenticatedUser>();
                     return result;
+
                 }
                 else
-                {    
+                {
                     throw new Exception(response.ReasonPhrase);
                 }
             }
@@ -72,13 +78,14 @@ namespace MagDesktopUI.Library.Api
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsAsync<LoggedInUserModel>();
-                    //I use a manual mapper instead of Automapper
+                    
+                    //Folosesc un mapper manual în loc de Automapper.
                     _loggedInUser.CreateDate = result.CreateDate;
                     _loggedInUser.EmailAddress = result.EmailAddress;
                     _loggedInUser.FirstName = result.FirstName;
                     _loggedInUser.ID = result.ID;
                     _loggedInUser.LastName = result.LastName;
-                    _loggedInUser.Token = token;                    
+                    _loggedInUser.Token = token;
                 }
                 else
                 {
@@ -88,5 +95,6 @@ namespace MagDesktopUI.Library.Api
             }
         }
     }
-
 }
+
+

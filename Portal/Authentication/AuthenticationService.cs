@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Portal.Models;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace Portal.Authentication
@@ -26,17 +25,17 @@ namespace Portal.Authentication
             authTokenStorageKey = _config[key:"authTokenStorageKey"];
         }
 
-        //public async Task<Result> Login(Request)
+        //public async Task<Result>               Login(Request)
         public async Task<AuthenticatedUserModel> Login(AuthenticationUserModel userForAuthentication)
         {
             var data = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("grant_type", "password"),
-                 new KeyValuePair<string, string>("username", userForAuthentication.Email),
+                new KeyValuePair<string, string>("username", userForAuthentication.Email),
                 new KeyValuePair<string, string>("password", userForAuthentication.Password),
             });
 
-            string api = _config[key:"apiLocation"] + _config[key:"tokenEndpoint"];
+            string api = _config["api"] + _config["tokenEndpoint"];
             var authResult = await _client.PostAsync(api, data);
             var authContent = await authResult.Content.ReadAsStringAsync();
 
@@ -49,7 +48,7 @@ namespace Portal.Authentication
                 authContent,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            await _localStorageService.SetItemAsync(authTokenStorageKey, result.Access_Token);
+            await _localStorageService.SetItemAsync("authToken", result.Access_Token);
 
             //doar prin casting (AuthStateProvider) putem apela NotifyUserAuthentication
             ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(result.Access_Token);
@@ -63,7 +62,7 @@ namespace Portal.Authentication
         public async Task Logout()
         {
             //stergem tokenul din local storage
-            await _localStorageService.RemoveItemAsync(authTokenStorageKey);
+            await _localStorageService.RemoveItemAsync("authToken");
 
             //doar prin casting ((AuthStateProvider)_authStateProvider) putem apela NotifyUserLogout
             //_authStateProvider.NotifyUserLogout() nu functioneaza deoarece nu are o metoda de autenticare definita

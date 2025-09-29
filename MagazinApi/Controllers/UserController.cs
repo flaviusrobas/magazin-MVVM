@@ -40,15 +40,79 @@ namespace MagazinApi.Controllers
         public UserModel GetById()
         {
 
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             //UserData data = new UserData(_config);
 
             return _userData.GetUsersById(userId).First();
 
         }
+        public record UserRegistrationModel(
+            string FirstName,
+            string LastName,
+            string EmailAddress,
+            string Password);
 
-        //[AllowAnonymous]
+        [HttpPost]
+        [Route("Register")]
+        [AllowAnonymous]
+        
+        public async Task<IActionResult> Register(UserRegistrationModel user)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingUser = await _userManager.FindByEmailAsync(user.EmailAddress);
+
+                if (existingUser == null)
+                {
+                    IdentityUser newUser = new()
+                    {
+                        Email = user.EmailAddress,
+                        EmailConfirmed = true,
+                        UserName = user.EmailAddress
+                    };
+                    IdentityResult result = await _userManager.CreateAsync(newUser, user.Password);
+
+                    if (result.Succeeded)
+                    {
+                        existingUser = await _userManager.FindByEmailAsync(user.EmailAddress);
+
+                        if (existingUser is null)
+                        { 
+                            return BadRequest();
+                        }
+
+                        UserModel u = new()
+                        {
+                            ID = existingUser.Id,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+                            EmailAddress = user.EmailAddress
+                        };
+                        _userData.CreateUser(u);
+                        return Ok();
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "User with this email already exists.");
+                }
+
+
+
+            }
+
+            return BadRequest();
+        }
+
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("Admin/GetAllUsers")]
@@ -109,7 +173,7 @@ namespace MagazinApi.Controllers
             var user = await _userManager.FindByIdAsync(pairing.UserId);
 
             // Save to log file 
-            _logger.LogInformation("Admin {Admin} added user { User} to role { Role}", loggedInUserId, user.Id, pairing.RoleName );
+            _logger.LogInformation("Admin {Admin} added user { User} to role { Role}", loggedInUserId, user.Id, pairing.RoleName);
 
             await _userManager.AddToRoleAsync(user, pairing.RoleName);
 
