@@ -1,6 +1,5 @@
 ﻿using MagDesktopUI.Library.Models;
 using Microsoft.Extensions.Configuration;
-using System.Configuration;
 using System.Net.Http.Headers;
 
 
@@ -12,13 +11,16 @@ namespace MagDesktopUI.Library.Api
         private HttpClient _apiClient;
         private ILoggedInUserModel _loggedInUser;
         private readonly IConfiguration _config;
+        
 
         public APIHelper(ILoggedInUserModel loggedInUser, IConfiguration config)
         {
-            InitializeClient();
+            
             _loggedInUser = loggedInUser;
             _config = config;
-
+            
+            // I call the function after assigning the parameters
+            InitializeClient();  
 
         }
 
@@ -27,9 +29,14 @@ namespace MagDesktopUI.Library.Api
             get { return _apiClient; }
 
         }
+
+       
         private void InitializeClient()
         {
-            string? api = System.Configuration.ConfigurationManager.AppSettings["api"];
+            
+            //string api = System.Configuration.ConfigurationManager.AppSettings["api"];
+            string? api = _config["api"];
+
 
             _apiClient = new HttpClient();
             _apiClient.BaseAddress = new Uri(api);
@@ -78,7 +85,7 @@ namespace MagDesktopUI.Library.Api
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsAsync<LoggedInUserModel>();
-                    
+
                     //Folosesc un mapper manual în loc de Automapper.
                     _loggedInUser.CreateDate = result.CreateDate;
                     _loggedInUser.EmailAddress = result.EmailAddress;

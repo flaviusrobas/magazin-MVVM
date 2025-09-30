@@ -1,21 +1,23 @@
 ﻿@page "/register"
+@inject AuthenticationStateProvider AuthStateProvider 
 @inject IUserEndpoint UserEndpoint
 @inject IAuthenticationService AuthService
 @inject NavigationManager NavManager
 
+
 <h3>Create An Account</h3>
 
-@* @if (!string.IsNullOrEmpty(errorMessage))
+@if (!string.IsNullOrEmpty(errorMessage))
 {
     <div class="alert alert-danger" role="alert">
         @errorMessage
     </div>
-} *@
+}
 
 <EditForm Model="@model" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
     
-    <div class="form-floating row">
+    <div class="form-group row">
         <label for="first-name" class="col-md-2 cor-form-label">FirstName:</label>
         <div class="col-md-10">
             <InputText id="first-name" class="form-control" @bind-Value="model.FirstName" />
@@ -23,7 +25,7 @@
         </div>
     </div>
 
-    <div class="form-floating row">
+    <div class="form-group row">
         <label for="last-name" class="col-md-2 cor-form-label">LastName:</label>
         <div class="col-md-10">
             <InputText id="last-name" class="form-control" @bind-Value="model.LastName" />
@@ -32,14 +34,14 @@
     </div>
 
     <div class="row">
-        <label for="form-floating row" class="col-md-2 cor-form-label">EmailAddress:</label>
+        <label for="form-group row" class="col-md-2 cor-form-label">EmailAddress:</label>
         <div class="col-md-10">
             <InputText id="email" class="form-control" @bind-Value="model.EmailAddress" />
             <ValidationMessage For="@(() => model.EmailAddress)" />
         </div>
     </div>
 
-    <div class="form-floating row">
+    <div class="form-group row">
         <label for="password" class="col-md-2 cor-form-label">Password:</label>
         <div class="col-md-10">
             <InputText type="password" id="password" class="form-control" @bind-Value="model.Password" />
@@ -47,7 +49,7 @@
         </div>
     </div>
 
-    <div class="form-floating row">
+    <div class="form-group row">
         <label for="confirm-password" class="col-md-2 cor-form-label">Confirm Password:</label>
         <div class="col-md-10">
             <InputText type="password" id="confirm-password" class="form-control" @bind-Value="model.ConfirmPassword" />

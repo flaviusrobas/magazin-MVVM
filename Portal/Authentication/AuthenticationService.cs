@@ -22,7 +22,7 @@ namespace Portal.Authentication
             _authStateProvider = authStateProvider;
             _localStorageService = localStorageService;
             _config = config;
-            authTokenStorageKey = _config[key:"authTokenStorageKey"];
+            authTokenStorageKey = _config["authTokenStorageKey"];
         }
 
         //public async Task<Result>               Login(Request)

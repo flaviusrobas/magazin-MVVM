@@ -18,13 +18,13 @@ namespace Portal.Authentication
         public AuthStateProvider(HttpClient httpClient,
             ILocalStorageService localStorageService,
             IConfiguration config)
-    
+
         {
             _httpClient = httpClient;
             _localStorage = localStorageService;
             _config = config;
             _anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
-          
+
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -38,18 +38,18 @@ namespace Portal.Authentication
             }
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(scheme: "Bearer", token);
-           
+
             return new AuthenticationState(
                 user: new ClaimsPrincipal(
-                 identity:   new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token),
+                 identity: new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token),
                     authenticationType: "jwtAuthType")));
         }
 
         public void NotifyUserAuthentication(string token)
         {
-           var authenticatedUser = new ClaimsPrincipal(
-                identity: new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token),
-                    authenticationType: "jwtAuthType"));
+            var authenticatedUser = new ClaimsPrincipal(
+                 identity: new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token),
+                     authenticationType: "jwtAuthType"));
 
             var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
 

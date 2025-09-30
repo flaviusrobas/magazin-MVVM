@@ -20,6 +20,6 @@ namespace MagDesktopUI.Library.Helpers
             return output;
 
 
-        }
+        }        
     }
 }
