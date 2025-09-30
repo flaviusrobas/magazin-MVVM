@@ -34,8 +34,11 @@ namespace MagDesktopUI.Library.Api
         private void InitializeClient()
         {
             
-            //string api = System.Configuration.ConfigurationManager.AppSettings["api"];
-            string? api = _config["api"];
+            //Method 1. using Microsoft.Extensions.Configuration.Binder
+            string? api = _config.GetValue<string>("api");
+
+            //Method 2. using Microsoft.Extensions.Configuration
+            //string? api = _config["api"]; 
 
 
             _apiClient = new HttpClient();
