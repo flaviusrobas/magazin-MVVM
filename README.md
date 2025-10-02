@@ -11,14 +11,14 @@ Project Magazin – MVVM
 
 ## Describe App
 1. Logic level (backend):
-  1.1 Aplication MagazinApi of type ASP.NET Core Web App (Model-View-Controller)(MagazinApi/wwwroot/images/apilayer.PNG)
-      MagazinApi contain EndPoint-Interface-Swagger(MagazinApi/wwwroot/images/swagger.PNG)
+  1.1 Aplication MagazinApi of type ASP.NET Core Web App !(Model-View-Controller)(MagazinApi/wwwroot/images/apilayer.PNG)
+      MagazinApi contain EndPoint-Interface-Swagger !(MagazinApi/wwwroot/images/swagger.PNG)
   1.2 Magazin.Library of type Library
    
 3. Model Date:
- 2.1 MagData of type Database Sql Server (MagazinApi/wwwroot/images/database.PNG))
+ 2.1 MagData of type Database Sql Server !(MagazinApi/wwwroot/images/database.PNG))
    
 4. User Interfaces (frontend):
-  3.1 Application MagDesktopUI of type Windows Presentation Form (WPF) (MagazinApi/wwwroot/images/useradministration.PNG)
-  3.2 Application Portal of type Blazor WebAssembly Stanalone App (Portal/wwwroot/images/register.PNG)
+  3.1 Application MagDesktopUI of type Windows Presentation Form (WPF) !(MagazinApi/wwwroot/images/useradministration.PNG)
+  3.2 Application Portal of type Blazor WebAssembly Stanalone App !(Portal/wwwroot/images/register.PNG)
   3.3 MagDesktopUI.Library of type Library
