@@ -4,7 +4,6 @@ using Caliburn.Micro;
 using MagDesktopUI.EventsModel;
 using MagDesktopUI.Library.Api;
 using MagDesktopUI.Library.Models;
-using MagDesktopUI.Views;
 
 namespace MagDesktopUI.ViewModels
 {

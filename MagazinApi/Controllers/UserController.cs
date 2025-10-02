@@ -118,7 +118,7 @@ namespace MagazinApi.Controllers
         [Route("Admin/GetAllUsers")]
         public List<ApplicationUserModel> GetAllUsers()
         {
-            List<ApplicationUserModel> output = new List<ApplicationUserModel>();
+            List<ApplicationUserModel> output = new();
 
             var users = _context.Users.ToList();
             var userRoles = from ur in _context.UserRoles
@@ -127,7 +127,7 @@ namespace MagazinApi.Controllers
 
             foreach (var user in users)
             {
-                ApplicationUserModel u = new ApplicationUserModel()
+                ApplicationUserModel u = new()
                 {
                     Id = user.Id,
                     Email = user.Email,
@@ -152,11 +152,13 @@ namespace MagazinApi.Controllers
         [Route("Admin/GetAllRoles")]
         public Dictionary<string, string> GetAllRoles()
         {
+            
 
             using (var context = new ApplicationDbContext())
             {
+                
                 var roles = _context.Roles.ToDictionary(x => x.Id, x => x.Name);
-
+                
                 return roles;
             }
 
@@ -167,7 +169,7 @@ namespace MagazinApi.Controllers
         [Route("Admin/AddRole")]
         public async Task AddARole(UserRolePairModel pairing)
         {
-            string loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string? loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInUser = _userData.GetUsersById(loggedInUserId).First();
 
             var user = await _userManager.FindByIdAsync(pairing.UserId);

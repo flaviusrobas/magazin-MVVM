@@ -1,11 +1,11 @@
-﻿<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+﻿<Router AppAssembly="@typeof(Program).Assembly" >
    
     <Found Context="routeData">       
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
             <Authorizing>
-                <text>Vă rugăm să așteptați, vă autorizăm.
+                <p>Vă rugăm să așteptați, vă autorizăm.
                     @* Please wait, we are authorizing you. *@                          
-                </text>
+                </p>
             </Authorizing>
         </AuthorizeRouteView>          
     </Found>
@@ -21,3 +21,8 @@
         </CascadingAuthenticationState>           
     </NotFound>
 </Router>
+
+@code{
+
+    public bool PreferExactMatches { get; set ;}
+}

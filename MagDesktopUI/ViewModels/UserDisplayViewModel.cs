@@ -48,7 +48,7 @@ namespace MagDesktopUI.ViewModels
                 SelectedUserName = value.Email;
                 //SelectedUserRole.Clear();
                 UserRoles = new BindingList<string>(value.Roles.Select(r => r.Value).ToList());
-                LoadRoles().GetAwaiter();
+                LoadRoles().GetAwaiter();               
                 NotifyOfPropertyChange(() => SelectedUser);
                 NotifyOfPropertyChange(() => CanAddSelectedRole);
                 NotifyOfPropertyChange(() => CanRemoveSelectedRole);
@@ -60,9 +60,9 @@ namespace MagDesktopUI.ViewModels
         public string SelectedUserRole
         {
             get { return _selectedUserRole; }
-            set 
-            { 
-                _selectedUserRole = value; 
+            set
+            {
+                _selectedUserRole = value;
                 NotifyOfPropertyChange(() => SelectedUserRole);
                 NotifyOfPropertyChange(() => CanRemoveSelectedRole);
             }
@@ -73,9 +73,9 @@ namespace MagDesktopUI.ViewModels
         public string SelectedAvailableRole
         {
             get { return _selectedAvailableRole; }
-            set 
+            set
             {
-                _selectedAvailableRole = value; 
+                _selectedAvailableRole = value;
                 NotifyOfPropertyChange(() => SelectedAvailableRole);
                 NotifyOfPropertyChange(() => CanAddSelectedRole);
             }
@@ -96,7 +96,7 @@ namespace MagDesktopUI.ViewModels
             }
         }
 
-        private BindingList<string> _userRoles = new BindingList<string>();
+        private BindingList<string> _userRoles = new();
 
         public BindingList<string> UserRoles
         {
@@ -108,7 +108,7 @@ namespace MagDesktopUI.ViewModels
             }
         }
 
-        private BindingList<string> _availableRoles = new BindingList<string>();
+        private BindingList<string> _availableRoles = new();
 
         public BindingList<string> AvailableRoles
         {
@@ -142,7 +142,8 @@ namespace MagDesktopUI.ViewModels
                 settings.ResizeMode = ResizeMode.NoResize;
                 settings.Title = "System Error";
 
-                var info = IoC.Get<StatusInfoViewModel>();
+                //var info = IoC.Get<StatusInfoViewModel>();
+                IoC.Get<StatusInfoViewModel>();
 
                 if (ex.Message == "Unauthorized")
                 {
@@ -183,7 +184,7 @@ namespace MagDesktopUI.ViewModels
                 }
 
             }
-            
+
         }
 
         public bool CanAddSelectedRole // Caliburn Micro
@@ -191,7 +192,7 @@ namespace MagDesktopUI.ViewModels
             get
             {
                 //return SelectedUser != null && !string.IsNullOrWhiteSpace(SelectedAvailableRole);
-                if(SelectedUser is null || SelectedAvailableRole is null)
+                if (SelectedUser is null || SelectedAvailableRole is null)
                 {
                     return false;
                 }
@@ -204,10 +205,10 @@ namespace MagDesktopUI.ViewModels
 
         public async Task AddSelectedRole()
         {
-           await _userEndpoint.AddUserToRole(SelectedUser.Id, SelectedAvailableRole);
+            await _userEndpoint.AddUserToRole(SelectedUser.Id, SelectedAvailableRole);
 
-           UserRoles.Add(SelectedAvailableRole);
-           AvailableRoles.Remove(SelectedAvailableRole);
+            UserRoles.Add(SelectedAvailableRole);
+            AvailableRoles.Remove(SelectedAvailableRole);
 
         }
 
@@ -229,8 +230,8 @@ namespace MagDesktopUI.ViewModels
 
         public async Task RemoveSelectedRole()
         {
-            await _userEndpoint.RemoveUserFromRole(SelectedUser.Id, SelectedUserRole);            
-            
+            await _userEndpoint.RemoveUserFromRole(SelectedUser.Id, SelectedUserRole);
+
             AvailableRoles.Add(SelectedUserRole);
             UserRoles.Remove(SelectedUserRole);
 

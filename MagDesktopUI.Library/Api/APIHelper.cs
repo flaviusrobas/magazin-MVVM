@@ -9,7 +9,7 @@ namespace MagDesktopUI.Library.Api
     public class APIHelper : IAPIHelper
     {
         private HttpClient _apiClient;
-        private ILoggedInUserModel _loggedInUser;
+        private readonly ILoggedInUserModel _loggedInUser;
         private readonly IConfiguration _config;
         
 
@@ -33,13 +33,15 @@ namespace MagDesktopUI.Library.Api
        
         private void InitializeClient()
         {
-            
-            //Method 1. using Microsoft.Extensions.Configuration.Binder
-            string? api = _config.GetValue<string>("api");
 
-            //Method 2. using Microsoft.Extensions.Configuration
-            //string? api = _config["api"]; 
+            //Method 1. using Microsoft.Extensions.Configuration.Binder for Portal appsettings.json
+            //string? api = _config.GetValue<string>("api");
 
+            //Method 2. using Microsoft.Extensions.Configuration Portal appsettings.json
+            //string? api = _config["api"];
+
+            //Method 3. using System.Configuration.ConfigurationManager for WPF App.config
+            string? api = System.Configuration.ConfigurationManager.AppSettings["api"];
 
             _apiClient = new HttpClient();
             _apiClient.BaseAddress = new Uri(api);
@@ -56,7 +58,7 @@ namespace MagDesktopUI.Library.Api
                 new KeyValuePair<string, string>("password", password),
             });
 
-            using (HttpResponseMessage response = await _apiClient.PostAsync("/Token", data))
+            using HttpResponseMessage response = await _apiClient.PostAsync("/Token", data);
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -83,7 +85,7 @@ namespace MagDesktopUI.Library.Api
             _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
 
-            using (HttpResponseMessage response = await _apiClient.GetAsync("/api/User"))
+            using HttpResponseMessage response = await _apiClient.GetAsync("/api/User");
             {
                 if (response.IsSuccessStatusCode)
                 {

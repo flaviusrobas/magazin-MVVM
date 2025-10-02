@@ -14,14 +14,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace MagDesktopUI.Views
+namespace MagDesktopUI.ViewModels
 {
     public class SalesViewModel : Screen
     {
-        IProductEndpoint _productEndpoint;
-        IConfigHelper _configHelper;
-        ISaleEndpoint _saleEndpoint;
-        IMapper _mapper;
+        private IProductEndpoint _productEndpoint;
+        private IConfigHelper _configHelper;
+        private ISaleEndpoint _saleEndpoint;
+        private IMapper _mapper;
         private readonly StatusInfoViewModel _status;
         private readonly IWindowManager _window;
         public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, 
@@ -127,7 +127,7 @@ namespace MagDesktopUI.Views
             }
         }
 
-        private BindingList<CartItemDisplayModel> _cart = new BindingList<CartItemDisplayModel>();
+        private BindingList<CartItemDisplayModel> _cart = new();
 
         public BindingList<CartItemDisplayModel> Cart
         {
@@ -238,7 +238,7 @@ namespace MagDesktopUI.Views
             }
             else
             {
-                CartItemDisplayModel item = new CartItemDisplayModel
+                CartItemDisplayModel item = new()
                 {
                     Product = SelectedProduct,
                     QuantityInCart = ItemQuantity,
@@ -314,7 +314,7 @@ namespace MagDesktopUI.Views
         public async Task CheckOut()
         {
             // Create SaleModel post to the API 
-            SaleModel sale = new SaleModel();
+            SaleModel sale = new();
 
             foreach(var item in Cart)
             {

@@ -1,4 +1,5 @@
-﻿using Magazin.Library.Internal.DataAccess;
+﻿using Azure.Messaging;
+using Magazin.Library.Internal.DataAccess;
 using Magazin.Library.Models;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -11,13 +12,6 @@ namespace Magazin.Library.DataAccess
 {
     public class ProductData : IProductData
     {
-        //private readonly IConfiguration _config;
-        //public ProductData(IConfiguration config)
-        //{
-        //    _config = config;           
-        //}
-
-
         private readonly ISqlDataAccess _sql;
         public ProductData(ISqlDataAccess sql)
         {
@@ -25,8 +19,6 @@ namespace Magazin.Library.DataAccess
         }
         public List<ProductModel> GetProductsById()
         {
-            //SqlDataAccess sql = new SqlDataAccess(_config);
-
             var output = _sql.LoadData<ProductModel, dynamic>("dbo.spProduct_GetAll", new { }, "MagData");
 
             return output;
@@ -34,8 +26,6 @@ namespace Magazin.Library.DataAccess
 
         public ProductModel GetProductById(int productId)
         {
-            //SqlDataAccess sql = new SqlDataAccess(_config);
-
             var output = _sql.LoadData<ProductModel, dynamic>("dbo.spProduct_GetById", new { Id = productId }, "MagData").FirstOrDefault();
 
             return output;

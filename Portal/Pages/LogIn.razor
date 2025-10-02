@@ -28,16 +28,25 @@
             <button type="submit" class="btn btn-success">Log In</button>
         </div>
 
-        
+
         <div class="col-auto">
             <button type="button" class="btn btn-primary" @onclick="RegisterUser">Register</button>
         </div>
     </div>
+    @if (showAuthenticationError)
+    {
+        <div class="form-row">
+            <div class="text-danger">
+                @authenticationErrorText
 
+            </div>
+        </div>
+    }
 </EditForm>
 
 
-@code { 
+
+@code {
 
     private AuthenticationUserModel model = new();
 

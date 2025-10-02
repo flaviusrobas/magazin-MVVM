@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System.Data;
 
 
+
 /*using System.Data.SqlClient;
 "Message": "An error has occurred.",
   "ExceptionMessage": "Keyword not supported: 'trust server certificate'.",
@@ -33,7 +34,7 @@ namespace Magazin.Library.Internal.DataAccess
         {
             string connectionString = GetConnectionString(connectionStringName);
 
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using IDbConnection connection = new SqlConnection(connectionString);
             {
                 connection.Open();
                 List<T> rows = connection.Query<T>(storedProcedure, parameters,
@@ -46,7 +47,7 @@ namespace Magazin.Library.Internal.DataAccess
         {
             string connectionString = GetConnectionString(connectionStringName);
 
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using IDbConnection connection = new SqlConnection(connectionString);
             {
                 connection.Open();
                 connection.Execute(storedProcedure, parameters,

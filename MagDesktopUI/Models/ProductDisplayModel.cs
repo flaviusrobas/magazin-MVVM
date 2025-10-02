@@ -10,8 +10,8 @@ namespace MagDesktopUI.Models
     public class ProductDisplayModel : INotifyPropertyChanged
     {
         public int Id { get; set; }
-        public string ProductName { get; set; }
-        public string Description { get; set; }
+        public string? ProductName { get; set; }
+        public string? Description { get; set; }
         public decimal RetailPrice { get; set; }
 
         private int _quantityInStock;
@@ -28,7 +28,7 @@ namespace MagDesktopUI.Models
 
         public bool IsTaxable { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

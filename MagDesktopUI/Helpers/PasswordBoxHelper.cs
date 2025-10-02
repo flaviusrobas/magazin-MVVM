@@ -53,13 +53,13 @@ namespace MagDesktopUI.Helpers
 
         private static void PasswordChanged(object sender, RoutedEventArgs e)
         {
-            PasswordBox password = sender as PasswordBox;
+            PasswordBox? password = sender as PasswordBox;
 
             SetBoundPassword(password, password.Password);
 
             // set cursor past the last character in the password box
             password.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(password, new object[] { password.Password.Length, 0 });
-          
+
 
         }
     }

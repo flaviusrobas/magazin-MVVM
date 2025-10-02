@@ -9,7 +9,7 @@ namespace MagDesktopUI.Models
 {
     public class CartItemDisplayModel : INotifyPropertyChanged
     {
-        public ProductDisplayModel Product { get; set; }
+        public ProductDisplayModel? Product { get; set; }
 
         private int _quantityInCart;
 

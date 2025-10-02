@@ -11,23 +11,23 @@ namespace MagDesktopUI.Library.Models
     {
         [Required]
         [Display(Name = "First Name")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         [Required]
         [Display(Name = "Last Name")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         [Required]
         [Display(Name = "Email Address")]
-        public string EmailAddress { get; set; }
+        public string? EmailAddress { get; set; }
 
         [Required]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [Required]
         [Display(Name = "Confirm Password")]
         [Compare(nameof(Password), ErrorMessage = "Passwords do not match.")]
-        public string ConfirmPassword { get; set; }
+        public string? ConfirmPassword { get; set; }
 
     }
 }

@@ -11,7 +11,7 @@ namespace Magazin.Library.Models
         ///<summary>
         /// The unique identifier for a given product.
         ///<summary>
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string ProductName { get; set; }
         public string Description { get; set; }
         public decimal RetailPrice { get; set; }
