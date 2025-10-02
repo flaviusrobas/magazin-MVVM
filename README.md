@@ -9,7 +9,7 @@ Project Magazin – MVVM
 * WPF
 * Blazor WebAssembly 
 
-## Describe App
+## Application Description
 1. Logic level (backend):
   1.1 Aplication MagazinApi of type ASP.NET Core Web App (Model-View-Controller)
       ![MagazinApi ready to run](MagazinApi/wwwroot/images/apilayer.PNG)
